@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { User } from "@/types/user";
-// import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
+import jwt from "jsonwebtoken";
 
 
 export async function POST(request: Request) {
@@ -15,7 +16,7 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-
+    const hashedPassword = await bcrypt.hash(password, 10);
     return NextResponse.json({
       message: `Welcome ${name}! Your account has been created.`,
     });
