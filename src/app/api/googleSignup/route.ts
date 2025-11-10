@@ -1,4 +1,3 @@
-// /api/signup-google/route.ts
 import { NextResponse } from "next/server";
 import { dbConnect } from "@/lib/DB";
 import User from "@/models/User";

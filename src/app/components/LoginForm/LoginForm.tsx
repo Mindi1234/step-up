@@ -4,7 +4,7 @@ import { useState, FormEvent, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./LoginForm.module.css";
 import { FaEnvelope, FaLock, FaEye } from 'react-icons/fa';
-import { signInWithGoogle } from "@/services/authService";
+import { signInWithGoogle } from "@/services/firebaseService";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");

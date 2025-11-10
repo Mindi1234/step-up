@@ -3,17 +3,8 @@ import { dbConnect } from "@/lib/DB";
 import User from "@/models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { isValidEmail, isValidPassword } from "@/services/validationService";
 
-function isValidEmail(email: string) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
-function isValidPassword(password: string) {
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  return passwordRegex.test(password);
-}
 
 export async function POST(request: Request) {
   try {
