@@ -1,5 +1,5 @@
 "use client";
-import { useState, FormEvent, ChangeEvent, FocusEvent, MouseEvent } from "react";
+import { useState,ChangeEvent, FocusEvent} from "react";
 import styles from "./SignupForm.module.css";
 import { FaUser, FaCalendarAlt, FaEnvelope, FaPhone, FaEye } from 'react-icons/fa';
 import { useRouter } from "next/navigation";
@@ -82,7 +82,7 @@ export default function SignupForm() {
         name: user.displayName,
         email: user.email,
         googleId: user.uid,
-        avatar: user.photoURL,
+        profileImg: user.photoURL,
         password: null,
       };
       const response = await fetch("/api/googleSignup", {

@@ -20,7 +20,7 @@ export async function POST(request: Request) {
         if (user) {
             if (!user.googleId) {
                 user.googleId = googleId;
-                if (profileImg) user.profileImg = profileImg;
+                user.profileImg = profileImg;
                 await user.save();
             }
         } else {
