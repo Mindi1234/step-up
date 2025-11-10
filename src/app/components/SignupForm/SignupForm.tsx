@@ -4,6 +4,8 @@ import styles from "./SignupForm.module.css";
 import { FaUser, FaCalendarAlt, FaEnvelope, FaPhone, FaEye } from 'react-icons/fa';
 import { useRouter } from "next/navigation";
 import { signInWithGoogle } from "@/services/firebaseService";
+import { useUserStore } from "@/app/store/userStore";
+import { log } from "console";
 
 export default function SignupForm() {
   const [name, setName] = useState("");
@@ -15,7 +17,10 @@ export default function SignupForm() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
   const router = useRouter();
+  const setUser = useUserStore((state) => state.setUser);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +46,10 @@ export default function SignupForm() {
         return;
       }
 
+      setUser(data.user);
+
       console.log("Signup successful:", data);
+
       router.push("/");
     } catch (err) {
       console.error("Fetch error:", err);
@@ -88,9 +96,10 @@ export default function SignupForm() {
         setError(savedUser.message || "Something went wrong");
         return;
       }
+      
+      setUser(savedUser.user);
 
-      // מעדכנים Zustand
-      // setUser(savedUser);
+      
 
       router.push("/");
 
