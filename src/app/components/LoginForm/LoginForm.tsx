@@ -3,7 +3,8 @@ import { useState, FormEvent, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./LoginForm.module.css";
 import { FaEnvelope, FaLock, FaEye } from 'react-icons/fa';
-import { signInWithGoogle } from "@/services/authService";
+import { signInWithGoogle } from "@/services/firebaseService";
+import { useUserStore } from "@/app/store/userStore";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -13,6 +14,7 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+  const setUser = useUserStore((state) => state.setUser);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,6 +31,8 @@ export default function LoginForm() {
       if (response.ok) {
         const data = await response.json();
         console.log("Login successful:", data);
+        setUser(data.user);
+
         router.push("/");
       } else {
         setError("Invalid email or password");
@@ -42,9 +46,9 @@ export default function LoginForm() {
     if (loading) return;
     setLoading(true);
     setError("");
-  
+
     try {
-      const user = await signInWithGoogle(); 
+      const user = await signInWithGoogle();
       const userData = {
         email: user.email,
         googleId: user.uid,
@@ -57,9 +61,11 @@ export default function LoginForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
       });
-  
+
       const data = await response.json();
-  
+      setUser(data.user);
+
+
       if (response.status === 200) {
         alert(data.message);
         router.push("/");
@@ -68,7 +74,7 @@ export default function LoginForm() {
       } else {
         setError(data.message || "Something went wrong");
       }
-  
+
     } catch (error: any) {
       console.error("Google sign-in error:", error.code || error);
       setError("Something went wrong during Google sign-in");
@@ -76,7 +82,7 @@ export default function LoginForm() {
       setLoading(false);
     }
   };
-  
+
 
 
   return (
