@@ -1,62 +1,128 @@
 "use client";
 
-import { useState } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
-import styles from "./LoginForm.module.css"; // אם את רוצה להוסיף עיצוב בהמשך
+import styles from "./LoginForm.module.css";
+import { FaEnvelope, FaLock, FaEye } from 'react-icons/fa';
+import { signInWithGoogle } from "@/services/authService";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     setError("");
-
+  
     try {
+      console.log("Sending login request with:", { email, password });
+  
       const response = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-      
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Login successful:", data);
-        router.push("/"); // ניתוב הביתה אחרי התחברות
-      } else {
-        setError("Invalid email or password");
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        setError(data.message || "Something went wrong.");
+        return;
       }
+  
+      console.log("Login successful:", data);
+      router.push("/");
     } catch (err) {
-      setError("Something went wrong. Please try again later.");
+      console.error("Fetch error:", err);
+      setError("Network error. Please try again later.");
     }
   };
+  
+
+    try {
+      const timeout = setTimeout(() => setLoading(false), 6000);
+
+      await signInWithGoogle();
+
+      clearTimeout(timeout);
+    } catch (error: any) {
+      console.error("❌ Sign-in error:", error.code || error);
+    } finally {
+      setLoading(false); 
+    }
+  };
+
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <h2>Log In</h2>
 
-      <label>Email:</label>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
+      <div className={styles.inputGroup}>
+        <label className={styles.label}>Email</label>
+        <div className={styles.inputWrapper}>
+          <input
+            type="email"
+            placeholder="Enter email address"
+            value={email}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+            required
+            className={styles.inputField}
+          />
+          <FaEnvelope className={styles.icon} />
+        </div>
+      </div>
 
-      <label>Password:</label>
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
+      <div className={styles.inputGroup}>
+        <label className={styles.label}>Password</label>
+        <div className={styles.inputWrapper}>
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Your password"
+            value={password}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+            required
+            className={styles.inputField}
+          />
+          <FaEye
+            className={styles.icon}
+            onClick={() => setShowPassword(!showPassword)}
+            style={{ cursor: 'pointer' }}
+          />
+        </div>
+      </div>
+
 
       {error && <p className={styles.error}>{error}</p>}
 
-      <button type="submit">Log In</button>
+      <button type="submit" className={styles.loginButton}>
+        Log In
+      </button>
+
+      <p className={styles.orDivider}>Or</p>
+
+      <button
+        type="button"
+        className={styles.googleButton}
+        onClick={handleGoogleSignIn}
+        disabled={loading}
+      >
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png"
+          alt="Google logo"
+          className={styles.googleIcon}
+        />
+        {loading ? "Signing in..." : "Sign in with Google"}
+      </button>
+
+      <p className={styles.signUpLink}>
+        Don't have an Account? <a href="/signup" className={styles.signUpText}>Sign Up</a>
+      </p>
+
     </form>
   );
 }
