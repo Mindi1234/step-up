@@ -1,28 +1,41 @@
-function isValidEmail(email: string) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+import { z } from "zod";
+
+export function isValidEmail(email: string): boolean {
+  const schema = z.string().email();
+  return schema.safeParse(email).success;
 }
 
-function isValidPassword(password: string) {
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  return passwordRegex.test(password);
+export function isValidPassword(password: string): boolean {
+  const schema = z
+    .string()
+    .min(8)
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/,
+      "Password must contain at least one uppercase, lowercase, number and special character"
+    );
+  return schema.safeParse(password).success;
 }
 
-function isValidPhone(phone: string) {
-  const phoneRegex = /^(\+972|0)([234589]|5[0-9])\d{7}$/;
-  return phoneRegex.test(phone);
+
+export function isValidPhone(phone: string): boolean {
+  const cleanedPhone = phone.trim().replace(/[-\s]/g, ""); 
+  const schema = z
+    .string()
+    .regex(/^(\+972|0)([234589]|5[0-9])\d{7}$/, "Invalid Israeli phone number");
+  return schema.safeParse(cleanedPhone).success;
 }
 
-function isValidBirthDate(birthDate: string) {
-  const date = new Date(birthDate);
-  const now = new Date();
-  if (isNaN(date.getTime()) || date > now) return false;
-  const minAge = 8;
-  const age = now.getFullYear() - date.getFullYear();
-  if (age < minAge) return false;
+export function isValidBirthDate(birthDate: string): boolean {
+  const schema = z
+    .string()
+    .refine((dateStr) => {
+      const date = new Date(dateStr);
+      const now = new Date();
+      if (isNaN(date.getTime()) || date > now) return false;
 
-  return true;
+      const age = now.getFullYear() - date.getFullYear();
+      return age >= 8;
+    }, "User must be at least 8 years old");
+
+  return schema.safeParse(birthDate).success;
 }
-
-export {isValidBirthDate,isValidEmail,isValidPassword,isValidPhone};
