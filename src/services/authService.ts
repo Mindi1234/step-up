@@ -1,4 +1,3 @@
-"use client"
 
 import { auth, provider } from "@/lib/firebase";
 import { signInWithPopup, signOut } from "firebase/auth";

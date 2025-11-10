@@ -12,6 +12,7 @@ export default function SignupForm() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,12 +37,21 @@ export default function SignupForm() {
     }
   }
 
+
   const handleGoogleSignIn = async () => {
+    if (loading) return;
+    setLoading(true);
+
     try {
-      const user = await signInWithGoogle();
-      setMessage(`Welcome, ${user.displayName}`);
-    } catch {
-      setMessage("Google sign-in failed");
+      const timeout = setTimeout(() => setLoading(false), 6000);
+
+      await signInWithGoogle();
+
+      clearTimeout(timeout);
+    } catch (error: any) {
+      console.error("❌ Sign-in error:", error.code || error);
+    } finally {
+      setLoading(false); // תמיד משחרר את הנעילה
     }
   };
 
@@ -143,14 +153,20 @@ export default function SignupForm() {
 
       <p className={styles.orDivider}>Or</p>
 
-      <button type="button" className={styles.googleButton} onClick={handleGoogleSignIn}>
+      <button
+        type="button"
+        className={styles.googleButton}
+        onClick={handleGoogleSignIn}
+        disabled={loading}
+      >
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png"
           alt="Google logo"
           className={styles.googleIcon}
         />
-        Sign in with Google
+        {loading ? "Signing in..." : "Sign in with Google"}
       </button>
+
       <p className={styles.signInLink}>
         Have an Account? <a href="/login" className={styles.signInText}>Sign In</a>
       </p>
