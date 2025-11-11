@@ -8,7 +8,7 @@ export async function GET(
 ) {
   await dbConnect();
   const { id } = params;
-  console.log("Fetching habit with id:", id); // לבדיקה
+  console.log("Fetching habit with id:", id); 
 
   const habit = await Habit.findById(id).populate("userId").populate("categoryId");
   if (!habit) return NextResponse.json({ message: "Habit not found" }, { status: 404 });
