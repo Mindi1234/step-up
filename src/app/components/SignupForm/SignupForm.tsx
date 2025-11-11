@@ -216,7 +216,7 @@ export default function SignupForm() {
           alt="Google logo"
           className={styles.googleIcon}
         />
-        {loading ? "Signing in..." : "Sign in with Google"}
+        {loading ? "Signing up..." : "Sign up with Google"}
       </button>
 
       <p className={styles.signInLink}>
