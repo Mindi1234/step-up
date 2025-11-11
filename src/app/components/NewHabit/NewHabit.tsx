@@ -3,20 +3,21 @@
 import { useState, useEffect } from "react";
 import { ICategory } from "@/interfaces/ICategory";
 import HabitForm from "../HabitForm/HabitForm";
+import { useHabitStore } from "@/app/store/useHobbyStore";
+import { useCategoriesStore } from "@/app/store/useCategoriesStore";
 
 export default function HabitsContainer() {
-  const [categories, setCategories] = useState<ICategory[]>([]);
   const [isOpen, setIsOpen] = useState(false); 
+  const { categories, fetchCategories } = useCategoriesStore();
+  const addHabit = useHabitStore((state) => state.addHabit);
 
   useEffect(() => {
-    // fetch("/api/categories")
-    //   .then(res => res.json())
-    //   .then(data => setCategories(data));
-  }, []);
+    if (categories.length === 0) fetchCategories(); 
+  }, [categories, fetchCategories]);
 
-  const handleAddHabit = (data: any) => {
+  const handleAddHabit = async  (data: any) => {
     console.log("Adding habit:", data);
-    // כאן אפשר גם לשמור ב-Zustand או לשלוח ל-API
+    await addHabit(data);
     setIsOpen(false); 
   };
 
