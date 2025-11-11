@@ -17,6 +17,7 @@ export function isValidPassword(password: string): boolean {
 }
 
 
+
 export function isValidPhone(phone: string): boolean {
   const cleanedPhone = phone.trim().replace(/[-\s]/g, ""); 
   const schema = z
@@ -39,3 +40,4 @@ export function isValidBirthDate(birthDate: string): boolean {
 
   return schema.safeParse(birthDate).success;
 }
+

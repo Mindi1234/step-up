@@ -53,7 +53,7 @@ export default function LoginForm() {
         email: user.email,
         googleId: user.uid,
         name: user.displayName,
-        avatar: user.photoURL
+        profileImg: user.photoURL
       };
 
       const response = await fetch("/api/googleLogin", {
