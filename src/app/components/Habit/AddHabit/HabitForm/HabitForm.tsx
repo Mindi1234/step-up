@@ -81,7 +81,7 @@ export default function HabitForm({ categories, onSubmit, onCancel }: HabitFormP
                 />
 
             </div>
-            <TargetDays control={control} error={formState.errors.days} />
+            <TargetDays control={control} name="days" error={formState.errors.days} />
             <button type="submit" className={styles.submitButton}>Add Habit</button>
             <button type="button" onClick={onCancel} className={styles.cancelButton}>
                 Cancel

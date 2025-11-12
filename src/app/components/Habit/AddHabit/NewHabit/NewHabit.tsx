@@ -52,17 +52,11 @@ export default function NewHabit() {
 
     const habitToSend: IHabitClient = {
       userId,
-      name: data.habitName,
+      name: data.name,
       description: data.description,
-      categoryId: data.category,
+      categoryId: data.categoryId,
       reminderTime: data.reminderTime,
-      days: data.targetDays
-        .map((day: boolean, index: number) =>
-          day
-            ? ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][index]
-            : null
-        )
-        .filter(Boolean),
+      days: data.days
     };
     
   

@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { dbConnect } from "@/lib/DB";
 import Habit from "@/models/Habit";
 import { habitSchema } from "@/lib/validation/habitValidation";
-import { parse } from "path";
 import mongoose from "mongoose";
 
 export async function GET(
