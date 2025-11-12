@@ -1,7 +1,7 @@
 import { Document, Types } from 'mongoose';
 
 export interface IHabit extends Document {
-  userId: Types.ObjectId;
+  userId: string;
   name: string;
   description?: string;
   categoryId: Types.ObjectId;

@@ -4,12 +4,23 @@ import HabitForm from "@/app/components/Habit/AddHabit/HabitForm/HabitForm";
 import { useHabitStore } from "@/app/store/useHobbyStore";
 import { useCategoriesStore } from "@/app/store/useCategoriesStore";
 
+
 export interface ICategoryFront {
   _id: string;
   name: string;
   image?: string;
   colorTheme?: string;
 }
+
+export interface IHabitClient {
+  userId: string;
+  name: string;
+  description?: string;
+  categoryId?: string;
+  reminderTime?: { hour: number; minute: number };
+  days?: string[];
+}
+
 
 export default function NewHabit() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,8 +29,6 @@ export default function NewHabit() {
 
   useEffect(() => {
     if (categories.length === 0) {
-      // ================================
-      // MOCK לטסטים – אפשר למחוק אחר כך
       const mockCategories: ICategoryFront[] = [
         { _id: "1", name: "Health", image: "", colorTheme: "#bcdbdf" },
         { _id: "2", name: "Study", image: "", colorTheme: "#183c5c" },
@@ -33,19 +42,35 @@ export default function NewHabit() {
       };
 
       fetchCategoriesMock().then((data) => fetchCategories());
-      // ================================
     } else {
       fetchCategories();
     }
   }, [categories, fetchCategories]);
 
   const handleAddHabit = async (data: any) => {
-    console.log("Adding habit:", data);
-    await addHabit(data);
-    alert("Habit added! Check console for details.");
-    setIsOpen(false);
-  };
+    const userId = localStorage.getItem("userId") || "123456734442242890abcdef"; 
 
+    const habitToSend: IHabitClient = {
+      userId,
+      name: data.habitName,
+      description: data.description,
+      categoryId: data.category,
+      reminderTime: data.reminderTime,
+      days: data.targetDays
+        .map((day: boolean, index: number) =>
+          day
+            ? ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][index]
+            : null
+        )
+        .filter(Boolean),
+    };
+    
+  
+    console.log("Sending habit to store:", habitToSend);
+  
+    await addHabit(habitToSend);
+  };
+  
   const handleCancel = () => {
     setIsOpen(false);
   };
