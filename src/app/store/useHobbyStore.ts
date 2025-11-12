@@ -7,10 +7,20 @@ interface HabitStore {
     error: string | null;
   
     fetchHabits: (userId: string) => Promise<void>;
-    addHabit: (habit: IHabit) => Promise<void>;
+    addHabit: (habit: IHabitClient) => Promise<void>;
     updateHabit: (habitId: string, updatedData: Partial<IHabit>) => Promise<void>;
     deleteHabit: (habitId: string) => Promise<void>;
   }
+
+  export interface IHabitClient {
+    userId: string;
+    name: string;
+    description?: string;
+    categoryId?: string;
+    reminderTime?: { hour: number; minute: number };
+    days?: string[];
+  }
+  
 
 export const useHabitStore = create<HabitStore>((set) => ({
   habits: [],
@@ -39,7 +49,7 @@ export const useHabitStore = create<HabitStore>((set) => ({
     }
   },
 
-  addHabit: async (habit: IHabit) => {
+  addHabit: async (habit: IHabitClient) => {  
     set({ loading: true, error: null });
     try {
         const res = await fetch("/api/habits", {
@@ -49,12 +59,12 @@ export const useHabitStore = create<HabitStore>((set) => ({
         });
         if (!res.ok) throw new Error("error add the habit");
 
-        const newHabit: IHabit = await res.json();
+        const newHabit: IHabit = await res.json();  
 
         set((state) => {
             const updatedHabits = [...state.habits, newHabit];
             if (habit.userId) {
-                localStorage.setItem( `habits_${habit.userId}`,JSON.stringify(updatedHabits));
+                localStorage.setItem(`habits_${habit.userId}`, JSON.stringify(updatedHabits));
             }
             return { habits: updatedHabits, loading: false };
         });
@@ -62,6 +72,7 @@ export const useHabitStore = create<HabitStore>((set) => ({
         set({ error: err.message, loading: false });
     }
 },
+
 
   updateHabit: async (habitId: string, updatedData: Partial<IHabit>) => {
     set({ loading: true, error: null });

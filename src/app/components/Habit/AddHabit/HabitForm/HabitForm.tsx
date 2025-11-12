@@ -73,8 +73,8 @@ export default function HabitForm({ categories, onSubmit, onCancel }: HabitFormP
                     control={control}
                     render={({ field }) => (
                         <ReminderTime
-                            value={field.value} // כעת שולח { hour, minute } או null
-                            onChange={field.onChange} // מקבל { hour, minute } או null
+                            value={field.value} 
+                            onChange={field.onChange}
                             error={formState.errors.reminderTime}
                         />
                     )}

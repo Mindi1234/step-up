@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { dbConnect } from "@/lib/DB";
 import Habit from "@/models/Habit";
+import mongoose from "mongoose";
 import "@/models/User"; 
 import "@/models/Category"; 
 import { habitSchema } from "@/lib/validation/habitValidation";
@@ -45,15 +46,25 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+    
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return NextResponse.json({ message: "Invalid userId" }, { status: 400 });
+    }
+    
+    if (categoryId && !mongoose.Types.ObjectId.isValid(categoryId)) {
+      return NextResponse.json({ message: "Invalid categoryId" }, { status: 400 });
+    }
+
 
     const newHabit = await Habit.create({
-      userId,
+      userId: new mongoose.Types.ObjectId(userId),  
       name,
       description,
-      categoryId,
+      categoryId: categoryId ? new mongoose.Types.ObjectId(categoryId) : undefined,
       reminderTime,
       days,
     });
+
 
     return NextResponse.json(newHabit, { status: 201 });
   } catch (error) {
