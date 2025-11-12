@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import HabitForm from "@/app/components/Habit/AddHabit/HabitForm/HabitForm";
 import { useHabitStore } from "@/app/store/useHobbyStore";
@@ -12,7 +11,7 @@ export interface ICategoryFront {
   colorTheme?: string;
 }
 
-export default function HabitsContainer() {
+export default function NewHabit() {
   const [isOpen, setIsOpen] = useState(false);
   const { categories, fetchCategories } = useCategoriesStore();
   const addHabit = useHabitStore((state) => state.addHabit);
