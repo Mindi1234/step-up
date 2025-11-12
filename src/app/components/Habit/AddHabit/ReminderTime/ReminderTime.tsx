@@ -47,18 +47,14 @@ export default function ReminderTime({ value, onChange, error }: ReminderTimePro
     };
 
 
-    // הצגת הערך (השארת השדה ריק אם הערך הוא 0)
     const hourValue = value?.hour === undefined || value.hour === 0 ? '' : value.hour;
     const minuteValue = value?.minute === undefined || value.minute === 0 ? '' : value.minute;
 
     return (
         <div className={styles.inputWrapper}>
             <div className={styles.timeDisplay}>
-                {/* אייקון השעון */}
-                <span className={styles.clockIcon}>🕒</span>
                 
                 <div className={styles.timeInputSplit}>
-                    {/* קלט שעה */}
                     <input
                         type="number"
                         min="0"
@@ -71,7 +67,6 @@ export default function ReminderTime({ value, onChange, error }: ReminderTimePro
                     
                     <span className={styles.separator}>:</span>
                     
-                    {/* קלט דקה */}
                     <input
                         type="number"
                         min="0"

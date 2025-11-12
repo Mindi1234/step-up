@@ -3,6 +3,7 @@ import { dbConnect } from "@/lib/DB";
 import Habit from "@/models/Habit";
 import "@/models/User"; 
 import "@/models/Category"; 
+import { habitSchema } from "@/lib/validation/habitValidation";
 
 export async function GET() {
   try {
@@ -22,6 +23,19 @@ export async function POST(request: Request) {
   try {
     await dbConnect();
     const body = await request.json();
+
+     const parsed = habitSchema.safeParse(body);
+    if (!parsed.success) {
+      const errors = parsed.error.issues.map(issue => ({
+        field: issue.path.join("."),
+        message: issue.message,
+      }));
+
+      return NextResponse.json(
+        { message: "Validation failed", errors },
+        { status: 400 }
+      );
+    }
 
     const { userId, name, description, categoryId, reminderTime, days } = body;
 

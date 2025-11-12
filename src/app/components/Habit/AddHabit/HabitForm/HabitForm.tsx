@@ -22,11 +22,11 @@ export default function HabitForm({ categories, onSubmit, onCancel }: HabitFormP
     const { register, handleSubmit, control, formState } = useForm<HabitFormData>({
         resolver: zodResolver(habitSchema),
         defaultValues: {
-            habitName: "",
+            name: "",
             description: "",
-            category: "",
+            categoryId: "",
             reminderTime: null,
-            targetDays: [false, false, false, false, false, false, false]
+            days: [false, false, false, false, false, false, false]
         },
     });
 
@@ -35,10 +35,10 @@ export default function HabitForm({ categories, onSubmit, onCancel }: HabitFormP
             <div className={styles.formGroup}>
                 <label className={styles.label}>Habit name</label>
                 <input
-                    {...register("habitName")}
+                    {...register("name")}
                     className={styles.input}
                 />
-                {formState.errors.habitName && <p className={styles.error}>{formState.errors.habitName.message}</p>}
+                {formState.errors.name && <p className={styles.error}>{formState.errors.name.message}</p>}
             </div>
             <div className={styles.formGroup}>
                 <label className={styles.label}>Description (Optional)</label>
@@ -53,14 +53,14 @@ export default function HabitForm({ categories, onSubmit, onCancel }: HabitFormP
             <div className={styles.formGroup}>
                 <label className={styles.label}>Category</label>
                 <Controller
-                    name="category"
+                    name="categoryId"
                     control={control}
                     render={({ field }) => (
                         <CategorySelect
                             categories={categories}
                             value={field.value}
                             onChange={field.onChange}
-                            error={formState.errors.category}
+                            error={formState.errors.categoryId}
                         />
                     )}
                 />
@@ -81,7 +81,7 @@ export default function HabitForm({ categories, onSubmit, onCancel }: HabitFormP
                 />
 
             </div>
-            <TargetDays control={control} error={formState.errors.targetDays} />
+            <TargetDays control={control} error={formState.errors.days} />
             <button type="submit" className={styles.submitButton}>Add Habit</button>
             <button type="button" onClick={onCancel} className={styles.cancelButton}>
                 Cancel
