@@ -30,8 +30,8 @@
 }
 
 .unselectedDay {
-    background-color: #333; 
-    color: white; 
+    background-color: #ffffff; 
+    color: rgb(0, 0, 0); 
 }
 
 .selectedDay {
