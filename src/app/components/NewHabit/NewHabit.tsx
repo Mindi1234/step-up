@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ICategory } from "@/interfaces/ICategory";
-import HabitForm from "../HabitForm/HabitForm";
+import HabitForm from "@/app/components/Habit/AddHabit/HabitForm/HabitForm";
 import { useHabitStore } from "@/app/store/useHobbyStore";
 import { useCategoriesStore } from "@/app/store/useCategoriesStore";
 
