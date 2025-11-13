@@ -28,6 +28,7 @@ export default function HabitForm({ categories, onSubmit, onCancel }: HabitFormP
         },
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
+
     const handleFormSubmit = async (data: HabitFormData) => {
         setIsSubmitting(true);
       
@@ -44,7 +45,18 @@ export default function HabitForm({ categories, onSubmit, onCancel }: HabitFormP
       
 
     return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className={styles.form}>       
+    <div className={styles.formContainer}>
+
+        {onCancel && (
+          <button
+            type="button"
+            className={styles.closeButton}
+            onClick={onCancel}
+          >
+            ×
+          </button>
+        )}
+        <form onSubmit={handleSubmit(handleFormSubmit)} className={styles.form}>       
          <div className={styles.formGroup}>
                 <label className={styles.label}>Habit name</label>
                 <input
@@ -105,6 +117,6 @@ export default function HabitForm({ categories, onSubmit, onCancel }: HabitFormP
                 Cancel
             </button>
         </form>
-        // </div>
+    </div>
     )
 }
