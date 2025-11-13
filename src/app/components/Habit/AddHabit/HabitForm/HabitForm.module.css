@@ -182,3 +182,29 @@
     outline: 3px solid rgba(17,24,39,0.12);
     outline-offset: 2px;
 }
+
+.formContainer {
+    position: relative;
+    background-color: white;
+    border-radius: 8px;
+    padding: 24px;
+  }
+  
+  .closeButton {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    font-weight: bold;
+    color: #006E8C;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+  
+  .closeButton:hover {
+    transform: scale(1.2);
+    color: #004c60;
+  }
+  
