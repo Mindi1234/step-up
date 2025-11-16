@@ -49,12 +49,12 @@ export default function NewHabit() {
 
   return (
     <div>
-<!--       <button
+{/* <!--       <button
         className={styles.addButton}
         onClick={() => setIsOpen(true)}
       >
         + Add Habit
-      </button>  -->
+      </button>  --> */}
       
       {isHabitModalOpen && (
          <div className={styles.overlay}>
