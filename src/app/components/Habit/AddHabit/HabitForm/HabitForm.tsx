@@ -9,6 +9,7 @@ import TargetDays from "../TargetDays/TargetDays";
 import styles from '@/app/components/Habit/AddHabit/HabitForm/HabitForm.module.css'
 import CategorySelect from "../CategorySelect/CategorySelect";
 import ReminderTime from "../ReminderTime/ReminderTime";
+import { useRouter } from "next/navigation";
 
 interface HabitFormProps {
     categories: ICategory[];
@@ -17,6 +18,7 @@ interface HabitFormProps {
 }
 
 export default function HabitForm({ categories, onSubmit, onCancel }: HabitFormProps) {
+    const router = useRouter();
     const { register, handleSubmit, control, formState } = useForm<HabitFormData>({
         resolver: zodResolver(habitSchema),
         defaultValues: {
@@ -28,7 +30,24 @@ export default function HabitForm({ categories, onSubmit, onCancel }: HabitFormP
         },
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isClosing, setIsClosing] = useState(false);
+
+    const handleCancelClick = () => {
+    setIsClosing(true); 
+    setTimeout(() => {
+        onCancel?.();
+    }, 300);
+    };
+
+
     const handleFormSubmit = async (data: HabitFormData) => {
+
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No token found in localStorage");
+          router.push("/login");
+          return;
+        }
         setIsSubmitting(true);
       
         confetti({
@@ -44,7 +63,20 @@ export default function HabitForm({ categories, onSubmit, onCancel }: HabitFormP
       
 
     return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className={styles.form}>       
+        <div className={styles.overlay}>
+        <div
+            className={`${styles.formContainer} ${isClosing ? styles.closing : ""}`}
+        >
+            {onCancel && (
+            <button
+                type="button"
+                className={styles.closeButton}
+                onClick={handleCancelClick}
+            >
+                ×
+            </button>
+            )}
+          <form onSubmit={handleSubmit(handleFormSubmit)} className={styles.form}>       
          <div className={styles.formGroup}>
                 <label className={styles.label}>Habit name</label>
                 <input
@@ -104,7 +136,8 @@ export default function HabitForm({ categories, onSubmit, onCancel }: HabitFormP
             <button type="button" onClick={onCancel} className={styles.cancelButton}>
                 Cancel
             </button>
-        </form>
-        // </div>
+            </form>
+         </div>
+     </div>
     )
 }
