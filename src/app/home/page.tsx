@@ -14,6 +14,7 @@ export default function HomePage() {
 
     const { total, done, percent } = useProgress(userId, today);
 
+    // Encouraging messages based on progress
     const getEncouragingMessage = (percentage: number) => {
         if (percentage === 0) return "Let's start your day strong!";
         if (percentage < 25) return "Great start! Keep going!";
@@ -22,6 +23,10 @@ export default function HomePage() {
         if (percentage < 100) return "You're almost done!";
         return "Perfect! You crushed it today! 🎉";
     };
+
+    // Define the new colors
+    const frameColor = "#a9a9a9"; // Darker Gray for the frame
+    const progressColor = "#00bfff"; // Light Blue for the progress
 
     return (
         <div className={styles.container}>
@@ -39,7 +44,7 @@ export default function HomePage() {
                     <svg className={styles.progressRing} width="120" height="120">
                         <circle
                             className={styles.progressRingCircle}
-                            stroke="#deeef"
+                            stroke={frameColor} // Changed from '#deeef' to a darker gray
                             strokeWidth="10"
                             fill="transparent"
                             r="52"
@@ -48,7 +53,7 @@ export default function HomePage() {
                         />
                         <circle
                             className={styles.progressRingCircleActive}
-                            stroke="#183c5c"
+                            stroke={progressColor} // Changed from '#183c5c' to light blue
                             strokeWidth="10"
                             fill="transparent"
                             r="52"
