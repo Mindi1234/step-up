@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import ProfileSidebar from "../Sidebar/Sidebar";
-import styles from "./ProfileSidebarWrapper.module.css"; // אפשר להוסיף כאן CSS Module
+import styles from "./ProfileSidebarWrapper.module.css";
 
 export default function ProfileSidebarWrapper() {
   const [isOpen, setIsOpen] = useState(false);
