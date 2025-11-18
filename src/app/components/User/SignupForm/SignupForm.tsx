@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { signInWithGoogle } from "@/services/firebaseService";
 import { useUserStore } from "@/app/store/useUserStore";
 import { mapUserToClient } from "@/utils/mapUser";
+import { signupService, googleSignupService } from "@/services/authService";
 
 export default function SignupForm() {
   const [name, setName] = useState("");
@@ -17,28 +18,27 @@ export default function SignupForm() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
 
-
   const router = useRouter();
   const setUser = useUserStore((state) => state.setUser);
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("SENDING:", { name, email, phone, birthDate, password });
 
     setMessage("");
+
     if (!name || !password || !birthDate || !phone || !email) {
       setMessage("Please fill in all required fields");
       return;
     }
 
-    try {
-
-      const response = await fetch("/api/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, password, birthDate, phone, email }),
-      });
+    const { ok, data } = await signupService({
+      name,
+      password,
+      birthDate,
+      phone,
+      email
+    });
 
       const data = await response.json();
 
@@ -52,52 +52,49 @@ export default function SignupForm() {
       console.error("Fetch error:", err);
       setMessage("Network error. Please try again later.");
     }
+
+    setUser(data.user);
+    router.push("/");
   };
-
-
-  const handleDateFocus = (e: FocusEvent<HTMLInputElement>) => {
-    e.currentTarget.type = 'date';
-  }
-
-  const handleDateBlur = (e: FocusEvent<HTMLInputElement>) => {
-    if (!birthDate) {
-      e.currentTarget.type = 'text';
-    }
-  }
 
   const handleGoogleSignIn = async () => {
     if (loading) return;
     setLoading(true);
+    setMessage("");
 
     try {
-      const timeout = setTimeout(() => setLoading(false), 6000);
-
       const user = await signInWithGoogle();
+
       const userData = {
         name: user.displayName,
         email: user.email,
         googleId: user.uid,
         profileImg: user.photoURL,
       };
-      const response = await fetch("/api/googleSignup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-      });
-      const savedUser = await response.json();
-      if (!response.ok) {
-        setMessage(savedUser.message || "Something went wrong");
+
+      const { ok, data } = await googleSignupService(userData);
+
+      if (!ok) {
+        setMessage(data.message || "Something went wrong");
         return;
       }
       setUser(mapUserToClient(savedUser.user));
       router.push("/");
-
-
-      clearTimeout(timeout);
     } catch (error: any) {
-      console.error(" Sign-in error:", error.code || error);
+      console.error("Google sign-up error:", error.code || error);
+      setMessage("Error during Google sign-up");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDateFocus = (e: FocusEvent<HTMLInputElement>) => {
+    e.currentTarget.type = 'date';
+  };
+
+  const handleDateBlur = (e: FocusEvent<HTMLInputElement>) => {
+    if (!birthDate) {
+      e.currentTarget.type = 'text';
     }
   };
 
