@@ -34,8 +34,7 @@ export async function GET(request: Request) {
         name: habit.name,
         description: habit.description,
         category: habit.categoryId,
-        isDone: log ? log.isDone : false,
-      };
+        isDone: log ? log.isDone : false,      };
     });
 
     return NextResponse.json({ habits: habitsWithStatus });
@@ -48,3 +47,4 @@ export async function GET(request: Request) {
     );
   }
 }
+
