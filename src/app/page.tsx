@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div>
       {/* <LoginForm /> */}
-      <HomePage/>
+      <LoginForm />
     </div>
   );
 }
