@@ -30,29 +30,26 @@ export default function SignupForm() {
       return;
     }
 
-    const { ok, data } = await signupService({
-      name,
-      password,
-      birthDate,
-      phone,
-      email
-    });
+    try {
+      const { ok, data } = await signupService({
+        name,
+        password,
+        birthDate,
+        phone,
+        email
+      });
 
-      const data = await response.json();
-
-      if (!response.ok) {
+      if (!ok) {
         setMessage(data.message || "Something went wrong.");
         return;
       }
+
       setUser(mapUserToClient(data.user));
       router.push("/");
     } catch (err) {
       console.error("Fetch error:", err);
       setMessage("Network error. Please try again later.");
     }
-
-    setUser(data.user);
-    router.push("/");
   };
 
   const handleGoogleSignIn = async () => {
@@ -76,7 +73,8 @@ export default function SignupForm() {
         setMessage(data.message || "Something went wrong");
         return;
       }
-      setUser(mapUserToClient(savedUser.user));
+
+      setUser(mapUserToClient(data.user));
       router.push("/");
     } catch (error: any) {
       console.error("Google sign-up error:", error.code || error);
