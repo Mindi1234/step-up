@@ -5,6 +5,7 @@ import styles from "./LoginForm.module.css";
 import { FaEnvelope, FaEye } from 'react-icons/fa';
 import { signInWithGoogle } from "@/services/firebaseService";
 import { useUserStore } from "@/app/store/useUserStore";
+import { mapUserToClient } from "@/utils/mapUser";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -32,8 +33,7 @@ export default function LoginForm() {
         const data = await response.json();
         localStorage.setItem("token", data.token);
         console.log("Login successful:", data);
-        setUser(data.user);
-
+        setUser(mapUserToClient(data.user));
         router.push("/");
       } else {
         setError("Invalid email or password");
@@ -67,7 +67,7 @@ export default function LoginForm() {
 
       if (response.ok) {
         localStorage.setItem("token", data.token);
-        setUser(data.user);
+        setUser(mapUserToClient(data.user));
         alert(data.message);
         router.push("/");
       } else if (response.status === 404) {
@@ -76,7 +76,7 @@ export default function LoginForm() {
         setError(data.message || "Something went wrong");
       }
 
-      setUser(data.user);
+      // setUser(data.user);
 
 
     } catch (error: any) {

@@ -1,20 +1,23 @@
 "use client";
-
 import { startOfDay } from "@/utils/date";
 import useProgress from "./hooks/useProgress";
 import { useState } from "react";
 import styles from "./HomePage.module.css";
+import { useUserStore } from "../store/useUserStore";
 
 export default function HomePage() {
-    const userId = '6912ed92a62819a71f166362';
+    const { user } = useUserStore();
+    const userId = user?.id;
     const [today] = useState(() => {
         const d = new Date();
         return startOfDay(d);
     });
+    const { total, done, percent } = useProgress(userId || "", today);
 
-    const { total, done, percent } = useProgress(userId, today);
+    if (!userId) {
+        return <p>Loading...</p>;
+    }
 
-    // Encouraging messages based on progress
     const getEncouragingMessage = (percentage: number) => {
         if (percentage === 0) return "Let's start your day strong!";
         if (percentage < 25) return "Great start! Keep going!";
@@ -24,9 +27,8 @@ export default function HomePage() {
         return "Perfect! You crushed it today! 🎉";
     };
 
-    // Define the new colors
-    const frameColor = "#a9a9a9"; // Darker Gray for the frame
-    const progressColor = "#00bfff"; // Light Blue for the progress
+    const frameColor = "#a9a9a9";
+    const progressColor = "#2e72ac";
 
     return (
         <div className={styles.container}>
@@ -44,7 +46,7 @@ export default function HomePage() {
                     <svg className={styles.progressRing} width="120" height="120">
                         <circle
                             className={styles.progressRingCircle}
-                            stroke={frameColor} // Changed from '#deeef' to a darker gray
+                            stroke={frameColor}
                             strokeWidth="10"
                             fill="transparent"
                             r="52"
@@ -53,7 +55,7 @@ export default function HomePage() {
                         />
                         <circle
                             className={styles.progressRingCircleActive}
-                            stroke={progressColor} // Changed from '#183c5c' to light blue
+                            stroke={progressColor}
                             strokeWidth="10"
                             fill="transparent"
                             r="52"

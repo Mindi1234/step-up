@@ -16,9 +16,6 @@ export default function useHabitsForDay(userId: string, date: Date) {
         const filtered = habits.filter(
           (h) => Array.isArray(h.days) && h.days[dayIndex]
         );
-        console.log("מפולטר",filtered);
-        
-
         setHabitsForDay(filtered);
       } catch (err) {
         console.error("useHabitsForDay error:", err);

@@ -5,6 +5,7 @@ import { FaUser, FaCalendarAlt, FaEnvelope, FaPhone, FaEye } from 'react-icons/f
 import { useRouter } from "next/navigation";
 import { signInWithGoogle } from "@/services/firebaseService";
 import { useUserStore } from "@/app/store/useUserStore";
+import { mapUserToClient } from "@/utils/mapUser";
 
 export default function SignupForm() {
   const [name, setName] = useState("");
@@ -43,7 +44,7 @@ export default function SignupForm() {
         setMessage(data.message || "Something went wrong.");
         return;
       }
-      setUser(data.user);
+      setUser(mapUserToClient(data.user));
       router.push("/");
     } catch (err) {
       console.error("Fetch error:", err);
@@ -86,8 +87,7 @@ export default function SignupForm() {
         setMessage(savedUser.message || "Something went wrong");
         return;
       }
-
-      setUser(savedUser.user);
+      setUser(mapUserToClient(savedUser.user));
       router.push("/");
 
 
