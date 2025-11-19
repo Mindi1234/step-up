@@ -21,7 +21,7 @@ export default function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-  
+
     try {
       const data = await loginService(email, password);
       localStorage.setItem("token", data.token);
@@ -31,12 +31,12 @@ export default function LoginForm() {
       setError("Invalid email or password");
     }
   };
-  
+
   const handleGoogleSignIn = async () => {
     if (loading) return;
     setLoading(true);
     setError("");
-  
+
     try {
       const user = await signInWithGoogle();
       const userData = {
@@ -45,9 +45,9 @@ export default function LoginForm() {
         name: user.displayName,
         profileImg: user.photoURL
       };
-  
+
       const { ok, status, data } = await googleLoginService(userData);
-  
+
       if (ok) {
         localStorage.setItem("token", data.token);
         setUser(mapUserToClient(data.user));
@@ -59,14 +59,14 @@ export default function LoginForm() {
         setError(data.message || "Something went wrong");
       }
       // setUser(data.user);
-      
+
     } catch (error: any) {
       console.error("Google sign-in error:", error.code || error);
       setError("Something went wrong during Google sign-in");
-  
+
     } finally {
       setLoading(false);
-    }  
+    }
   };
 
   return (
@@ -106,6 +106,10 @@ export default function LoginForm() {
           />
         </div>
       </div>
+      <p className={styles.forgotPassword}>
+        <a href="/forgot-password">Forgot your password?</a>
+      </p>
+
 
 
       {error && <p className={styles.error}>{error}</p>}
