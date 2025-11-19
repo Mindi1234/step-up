@@ -7,6 +7,7 @@ import NewHabit from "./components/Habit/AddHabit/NewHabit/NewHabit";
 
 
 
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -40,7 +41,7 @@ export default async function RootLayout({
         <ProfileSidebarWrapper />
         {children}
         <NewHabit />
-        {/* <HomePage/> */}
+
         <footer>
           <BottomNavbar />
         </footer>
