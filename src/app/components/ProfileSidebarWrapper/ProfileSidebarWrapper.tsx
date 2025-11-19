@@ -2,31 +2,21 @@
 import { useState, useEffect } from "react";
 import ProfileSidebar from "../Sidebar/Sidebar";
 import styles from "./ProfileSidebarWrapper.module.css";
+import { useUserStore } from "@/app/store/useUserStore";
 
 export default function ProfileSidebarWrapper() {
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState<{ name: string; email: string; profileImg?: string } | null>(null);
+  const user = useUserStore((state) => state.user);
+  const clearUser = useUserStore((state) => state.clearUser);
 
-  useEffect(() => {
-    const stored = localStorage.getItem("user-storage");
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        setUser(parsed.state.user);
-      } catch (err) {
-        console.error("Failed to parse user-storage", err);
-      }
-    }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("user-storage");
-    setUser(null);
-    setIsOpen(false);
-  };
 
   if (!user) return null;
 
+  const handleLogout = () => {
+    clearUser();
+    setIsOpen(false);
+  };
+  
   return (
     <>
       <button className={styles.hamburger} onClick={() => setIsOpen(true)}>
