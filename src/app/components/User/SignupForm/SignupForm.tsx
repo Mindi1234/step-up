@@ -200,6 +200,12 @@ export default function SignupForm() {
         </div>
         {errors.password && <p className={styles.error}>{errors.password}</p>}
       </div>
+      <div className={styles.terms}>
+        <input type="checkbox" id="terms-checkbox" required />
+        <label htmlFor="terms-checkbox">
+          I agree to the <span className={styles.termsLink}>Terms of Services</span> and <span className={styles.termsLink}>Privacy Policy.</span>
+        </label>
+      </div>
 
       {errors.general && <p className={styles.error}>{errors.general}</p>}
 
@@ -215,8 +221,18 @@ export default function SignupForm() {
         disabled={loading}
         className={styles.googleButton}
       >
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png"
+          alt="Google logo"
+          className={styles.googleIcon}
+        />
         Sign up with Google
       </button>
+      <p className={styles.loginUpLink}>
+        Already have an account?{" "}
+        <a href="/" className={styles.loginText}>Login</a>
+      </p>
+
     </form>
   );
 }

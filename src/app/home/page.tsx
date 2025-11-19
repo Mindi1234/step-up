@@ -7,30 +7,31 @@ import DaysSlider from "../components/HomePage/DaysSlider/DaysSlider";
 import TodayHabits from "../components/HomePage/TodayHabits/TodayHabits";
 
 export default function HomePage() {
-  const [habits, setHabits] = useState([]);
+    const [habits, setHabits] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
-  const fetchHabits = async (selectedDate: Date) => {
-    const weekday = selectedDate.getDay();
-  };
+    const fetchHabits = async (selectedDate: Date) => {
+        const weekday = selectedDate.getDay();
+    };
 
-  useEffect(() => {
-    fetchHabits(new Date());
-  }, []);
+    useEffect(() => {
+        fetchHabits(new Date());
+    }, []);
 
-  return (
-    <div>
-        <ProgressBar/>
-      <div className={styles.sliderWrapper}>
-        <DaysSlider onDaySelect={fetchHabits} />
-      </div>
+    return (
+        <div>
+            <ProgressBar />
+            <div className={styles.sliderWrapper}>
+                <DaysSlider onDaySelect={fetchHabits} />
+            </div>
 
-      <h2>Habits for selected day:</h2>
-      {/* <div style={{ marginTop: "20px" }}>
+            <h2>Habits for selected day:</h2>
+            {/* <div style={{ marginTop: "20px" }}>
         {habits.map((h: any) => (
           <div key={h._id}>{h.name}</div>
         ))}
       </div> */}
-      <TodayHabits />
-    </div>
-  );
+            <TodayHabits selectedDate={selectedDate} />
+        </div>
+    );
 }

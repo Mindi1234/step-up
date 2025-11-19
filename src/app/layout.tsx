@@ -4,7 +4,6 @@ import "./globals.css";
 import ProfileSidebarWrapper from "./components/ProfileSidebarWrapper/ProfileSidebarWrapper";
 import BottomNavbar from "./components/BottomNavbar/BottomNavbar";
 import NewHabit from "./components/Habit/AddHabit/NewHabit/NewHabit";
-import LoginForm from "./components/User/LoginForm/LoginForm";
 
 
 
@@ -23,7 +22,7 @@ export const metadata: Metadata = {
   title: "StepUp",
   description: "for a better habits",
   icons: {
-    icon: '/logo.ico',
+    icon: '/images/logo.ico',
   }
 };
 
@@ -42,8 +41,6 @@ export default async function RootLayout({
         <ProfileSidebarWrapper />
         {children}
         <NewHabit />
-        <LoginForm/>
-        <BottomNavbar />
 
         <footer>
           <BottomNavbar />

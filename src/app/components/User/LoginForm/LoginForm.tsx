@@ -57,7 +57,6 @@ export default function LoginForm() {
       } else {
         setError(data.message || "Something went wrong");
       }
-      // setUser(data.user);
 
     } catch (error: any) {
       console.error("Google sign-in error:", error.code || error);
@@ -70,7 +69,7 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      <img className={styles.logoImg} src="/fullLogo.png" alt="full logo" />
+      <img className={styles.logoImg} src="/images/fullLogo.png" alt="full logo" />
       <h2>Log In</h2>
       <div className={styles.inputGroup}>
         <label className={styles.label}>Email</label>
