@@ -2,11 +2,11 @@
 import { useState, useEffect } from "react";
 import ProfileSidebar from "../Sidebar/Sidebar";
 import styles from "./ProfileSidebarWrapper.module.css";
+import { logout } from "@/services/authService";
 
 export default function ProfileSidebarWrapper() {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<{ name: string; email: string; profileImg?: string } | null>(null);
-
   useEffect(() => {
     const stored = localStorage.getItem("user-storage");
     if (stored) {
@@ -20,6 +20,7 @@ export default function ProfileSidebarWrapper() {
   }, []);
 
   const handleLogout = () => {
+    logout();
     localStorage.removeItem("user-storage");
     setUser(null);
     setIsOpen(false);
