@@ -4,7 +4,6 @@ import HabitForm from "@/app/components/Habit/AddHabit/HabitForm/HabitForm";
 import { useHabitStore } from "@/app/store/useHobbyStore";
 import { useCategoriesStore } from "@/app/store/useCategoriesStore";
 import { useModalStore } from "@/app/store/useModalStore";
-import styles from "./NewHabit.module.css";
 import { useUserStore } from "@/app/store/useUserStore";
 
 export default function NewHabit() {
@@ -34,14 +33,11 @@ export default function NewHabit() {
   if (!isHabitModalOpen) return null;
 
   return (
-    <div className={styles.overlay}>
-      <div className={styles.modalContainer}>
         <HabitForm
           categories={categories}
           onSubmit={handleAddHabit}
           onCancel={closeHabitModal}
         />
-      </div>
-    </div>
+    
   );
 }
