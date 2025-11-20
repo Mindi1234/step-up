@@ -2,15 +2,16 @@ import { create } from "zustand";
 import { IHabit } from "@/interfaces/IHabit";
 
 interface HabitStore {
-    habits: IHabit[];
-    loading: boolean;
-    error: string | null;
-  
-    fetchHabits: (userId: string) => Promise<void>;
-    addHabit: (habit: IHabitClient) => Promise<void>;
-    updateHabit: (habitId: string, updatedData: Partial<IHabit>) => Promise<void>;
-    deleteHabit: (habitId: string) => Promise<void>;
-  }
+  habits: IHabit[];
+  loading: boolean;
+  error: string | null;
+
+  fetchHabits: (userId: string) => Promise<void>;
+  addHabit: (habit: IHabitClient) => Promise<IHabit | null>;
+  updateHabit: (habitId: string, updatedData: Partial<IHabit>) => Promise<void>;
+  deleteHabit: (habitId: string) => Promise<void>;
+}
+
 
   export interface IHabitClient {
     userId: string;
@@ -49,33 +50,37 @@ export const useHabitStore = create<HabitStore>((set) => ({
     }
   },
 
-  addHabit: async (habit: IHabitClient) => {  
+  addHabit: async (habit: IHabitClient) => {
     set({ loading: true, error: null });
     try {
+      const habitToSend = { ...habit };
+  
       const res = await fetch('/api/habits', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify(habit),
+        body: JSON.stringify(habitToSend),
       });
-        if (!res.ok) throw new Error("error add the habit");
-
-        const newHabit: IHabit = await res.json();  
-
-        set((state) => {
-            const updatedHabits = [...state.habits, newHabit];
-            if (habit.userId) {
-                localStorage.setItem(`habits_${habit.userId}`, JSON.stringify(updatedHabits));
-            }
-            return { habits: updatedHabits, loading: false };
-        });
+  
+      if (!res.ok) throw new Error("error adding the habit");
+  
+      const newHabit: IHabit = await res.json();
+  
+      set((state) => {
+        const updatedHabits = [...state.habits, newHabit];
+        if (habit.userId) {
+          localStorage.setItem(`habits_${habit.userId}`, JSON.stringify(updatedHabits));
+        }
+        return { habits: updatedHabits, loading: false };
+      });
+  
+      return newHabit;
     } catch (err: any) {
-        set({ error: err.message, loading: false });
+      set({ error: err.message, loading: false });
+      return null;
     }
-},
-
+  },
+  
 
   updateHabit: async (habitId: string, updatedData: Partial<IHabit>) => {
     set({ loading: true, error: null });

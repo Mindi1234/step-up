@@ -15,15 +15,19 @@ export async function GET(request: Request) {
     const dateParam = searchParams.get("date");
     const targetDate = dateParam ? new Date(dateParam) : new Date();
     
-    const startOfDay = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), 0, 0, 0, 0);
-    const endOfDay = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), 23, 59, 59, 999);
-
-
+    const startOfDay = new Date(targetDate);
+    startOfDay.setHours(0,0,0,0);
+    
+    const endOfDay = new Date(targetDate);
+    endOfDay.setHours(23,59,59,999);
+    
     const todayIndex = targetDate.getDay(); 
+
     const habitsToday = await Habit.find({
       userId,
       [`days.${todayIndex}`]: true,
     }).populate("categoryId");
+    
 
     const logsToday = await HabitLog.find({
         userId,

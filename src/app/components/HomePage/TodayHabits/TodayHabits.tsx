@@ -12,13 +12,21 @@ export default function TodayHabits({ selectedDate }: { selectedDate: Date }) {
   useEffect(() => {
     const fetchHabitsForDate = async () => {
       setLoading(true);
-      const data = await getTodayHabits(selectedDate);
-      setHabits(data || []);
-      setLoading(false);
+      try {
+        const habitsForToday = await getTodayHabits(selectedDate);
+        console.log("today habits:", habitsForToday);
+        setHabits(habitsForToday); 
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     };
-
+  
     fetchHabitsForDate();
   }, [selectedDate]);
+  
+  
 
   const toggleHabitStatus = async (habitId: string) => {
     const updatedHabit = await updateHabitStatus(habitId, selectedDate);
