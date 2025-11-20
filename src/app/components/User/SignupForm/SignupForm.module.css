@@ -1,15 +1,14 @@
-
 .formContainer {
-    max-width: 400px; 
+    max-width: 400px;
     width: 100%;
-    margin: 0 auto; 
+    margin: 0 auto;
     padding: 30px;
     background-color: white;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     color: #333;
-    direction: ltr; 
+    direction: ltr;
     min-height: 100vh;
-    box-sizing: border-box; 
+    box-sizing: border-box;
 }
 
 
@@ -36,7 +35,7 @@
     position: relative;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #ddd; 
+    border-bottom: 1px solid #ddd;
 }
 
 .inputField {
@@ -71,7 +70,7 @@
 .terms input[type="checkbox"] {
     margin-top: 4px;
     margin-right: 10px;
-    accent-color: #333; 
+    accent-color: #333;
 }
 
 .terms label {
@@ -95,7 +94,7 @@
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .orDivider {
@@ -134,19 +133,40 @@
 }
 
 .signInText {
-    color: #333; 
+    color: #333;
     text-decoration: none;
     font-weight: 600;
 }
-.error{
+
+.error {
     color: red;
 }
+
+.loginUpLink {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 15px;
+    color: #555;
+}
+
+.loginText {
+    color: #333;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+
+
+
+
+
+
 
 @media (min-width: 401px) {
     .formContainer {
         border-radius: 12px;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-        min-height: auto; 
+        min-height: auto;
         margin-top: 50px;
         margin-bottom: 50px;
     }
