@@ -1,7 +1,7 @@
 "use client";
-import {useEffect } from "react";
+import { useEffect } from "react";
 import HabitForm from "@/app/components/Habit/AddHabit/HabitForm/HabitForm";
-import {useHabitStore } from "@/app/store/useHobbyStore";
+import { useHabitStore } from "@/app/store/useHobbyStore";
 import { useCategoriesStore } from "@/app/store/useCategoriesStore";
 import { useModalStore } from "@/app/store/useModalStore";
 import styles from './NewHabit.module.css';
@@ -15,11 +15,12 @@ export default function NewHabit() {
   const user = useUserStore((state) => state.user);
 
   useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
-
+    if (user) {
+      fetchCategories();
+    }
+  }, [user, fetchCategories]);
   const handleAddHabit = async (data: any) => {
-    const userId =user?.id;
+    const userId = user?.id;
 
     const habitToSend = {
       userId: userId || "",
