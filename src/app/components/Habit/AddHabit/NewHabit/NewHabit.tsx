@@ -18,7 +18,7 @@ export default function NewHabit() {
 
   const handleAddHabit = async (data: any) => {
     const userId = localStorage.getItem("userId") || "";
-
+    console.log(data.days);
     await addHabit({
       userId,
       name: data.name,
