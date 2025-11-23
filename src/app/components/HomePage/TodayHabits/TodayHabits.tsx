@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getTodayHabits} from "@/services/habitsService";
+import { getHabitsByDate, getTodayHabits} from "@/services/habitsService";
 import { ITodayHabit } from "@/interfaces/ITodayHabit"; 
 import styles from "./TodayHabits.module.css";
 import { updateHabitStatus } from "@/services/habitLogService";
+import { toUTCDate } from "@/utils/date";
 
 function cleanDate(date: Date) {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  return toUTCDate(date);
 }
 
 export default function TodayHabits({ selectedDate }: { selectedDate: Date }) {
@@ -19,7 +20,7 @@ export default function TodayHabits({ selectedDate }: { selectedDate: Date }) {
     const fetchHabitsForDate = async () => {
       setLoading(true);
       try {
-        const todaysHabits = await getTodayHabits(clean);
+        const todaysHabits = await getHabitsByDate(clean);
         console.log(todaysHabits);
         
         setHabits(todaysHabits);

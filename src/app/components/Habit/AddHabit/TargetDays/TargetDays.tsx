@@ -5,11 +5,11 @@ import styles from './TargetDays.module.css';
 
 interface TargetDaysProps {
     control: Control<any>;
-    name?: string; 
+    name?: string;
     error?: any;
 }
 
-const days = [ "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ,"Sun"];
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export default function TargetDays({ control, name = "days", error }: TargetDaysProps) {
     return (

@@ -1,6 +1,6 @@
 import { IHabit } from "@/interfaces/IHabit";
 import { getUserHabits } from "@/services/habitsService";
-import { getDayIndex } from "@/utils/date";
+import { getDayIndexUTC } from "@/utils/date";
 import { useEffect, useState } from "react";
 
 export default function useHabitsForDay(userId: string, date: Date) {
@@ -12,7 +12,7 @@ export default function useHabitsForDay(userId: string, date: Date) {
     async function load() {
       try {
         const habits = await getUserHabits();
-        const dayIndex = getDayIndex(date);
+        const dayIndex = getDayIndexUTC(date);
         const filtered = habits.filter(
           (h) => Array.isArray(h.days) && h.days[dayIndex]
         );
