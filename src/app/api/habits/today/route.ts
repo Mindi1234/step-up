@@ -9,11 +9,18 @@ export async function GET(request: Request) {
     await dbConnect();
 
     const user = await authenticate(request);
-    const userId = user._id; 
+    console.log("Authenticated user:", user?._id);
 
     const { searchParams } = new URL(request.url);
     const dateParam = searchParams.get("date");
+    console.log("Incoming date:", dateParam);
+
     const targetDate = dateParam ? new Date(dateParam) : new Date();
+    console.log("Parsed date:", targetDate);
+
+    if (isNaN(targetDate.getTime())) {
+        throw new Error("Invalid date from client");
+      }
     
     const startOfDay = new Date(targetDate);
     startOfDay.setHours(0,0,0,0);
@@ -25,13 +32,13 @@ export async function GET(request: Request) {
     console.log("Fetching habits for date:", todayIndex);
 
     const habitsToday = await Habit.find({
-      userId,
-      [`days.${todayIndex}`]: true,
-    }).populate("categoryId");
+        userId: user._id,
+        [`days.${todayIndex}`]: true,
+      }).populate("categoryId");
     
 
     const logsToday = await HabitLog.find({
-        userId,
+        userId: user._id,
         date: { $gte: startOfDay, $lte: endOfDay },
       });
 
