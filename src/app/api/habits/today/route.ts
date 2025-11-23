@@ -9,7 +9,12 @@ export async function GET(request: Request) {
     await dbConnect();
 
     const user = await authenticate(request);
-    console.log("Authenticated user:", user?._id);
+    if (!user || !user._id) {
+      return NextResponse.json(
+        { message: "Unauthorized - please log in" },
+        { status: 401 }
+      );
+    }
 
     const { searchParams } = new URL(request.url);
     const dateParam = searchParams.get("date");
@@ -21,8 +26,11 @@ export async function GET(request: Request) {
     console.log("Parsed date:", targetDate);
 
     if (isNaN(targetDate.getTime())) {
-        throw new Error("Invalid date from client");
-      }
+      return NextResponse.json(
+        { message: "Invalid date format" },
+        { status: 400 }
+      );
+    }
     
     const startOfDay = new Date(targetDate);
     startOfDay.setHours(0,0,0,0);
@@ -59,10 +67,11 @@ export async function GET(request: Request) {
         
     });
 
-    return NextResponse.json({ habits: habitsWithStatus });
+    return NextResponse.json(habitsWithStatus);
 
   } catch (error: any) {
-    console.error("GET /habits/today error:", error);
+   console.error("GET /habits/today error:", error);
+    console.error("Error stack:", error.stack); 
     return NextResponse.json(
       { message: error.message || "Failed to fetch today's habits" },
       { status: 500 }
