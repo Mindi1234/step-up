@@ -26,7 +26,7 @@ export async function getTodayHabits(date?: Date) {
   }
 
   const data = await response.json();
-  return data.habits || [];
+  return data;
 }
 
 export async function updateHabitStatus(habitId: string, date?: Date) {

@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     console.log("Incoming date:", dateParam);
 
     const targetDate = dateParam 
-      ? new Date(dateParam + "T00:00:00")
+      ? new Date(dateParam + "T12:00:00.000Z") 
       : new Date();
     console.log("Parsed date:", targetDate);
 
@@ -32,14 +32,16 @@ export async function GET(request: Request) {
       );
     }
     
-    const startOfDay = new Date(targetDate);
-    startOfDay.setHours(0,0,0,0);
+    const [year, month, day] = dateParam?.split('-').map(Number) || [];
+    const localDate = new Date(year, month - 1, day);
+    const todayIndex = localDate.getDay();
     
-    const endOfDay = new Date(targetDate);
-    endOfDay.setHours(23,59,59,999);
+    console.log("Fetching habits for day:", todayIndex, `(${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][todayIndex]})`);
+
+    const startOfDay = new Date(dateParam + "T00:00:00.000Z");
+    const endOfDay = new Date(dateParam + "T23:59:59.999Z");
     
-    const todayIndex = targetDate.getDay(); 
-    console.log("Fetching habits for date:", todayIndex);
+    console.log("Date range:", startOfDay, "to", endOfDay);
 
     const habitsToday = await Habit.find({
       userId: user._id,
