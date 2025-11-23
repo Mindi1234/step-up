@@ -10,12 +10,14 @@ export async function getUserHabits(): Promise<IHabit[]> {
 }
 export async function getTodayHabits(date?: Date) {
     const targetDate = date || new Date();
-    const dateString = targetDate.toISOString().split('T')[0];
     
-    const response = await fetch(`/api/habits/today?date=${dateString}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
+    const response = await fetch(
+      `/api/habits/today?date=${encodeURIComponent(targetDate.toISOString())}`,
+      {
+          method: "GET",
+          credentials: "include", 
+      }
+  );
     
       if (!response.ok) {
         throw new Error("Failed to fetch habits");
