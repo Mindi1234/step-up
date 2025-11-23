@@ -1,9 +1,9 @@
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/app/store/useUserStore";
 import { resetUserPassword } from "@/services/userService";
+import { isValidPassword } from "@/services/validationService"; 
 
 export default function NewPasswordComponent() {
   const router = useRouter();
@@ -26,9 +26,17 @@ export default function NewPasswordComponent() {
       return;
     }
 
+    // בדיקה שהסיסמה עומדת בכללי האבטחה
+    if (!isValidPassword(password)) {
+      setError(
+        "Password must be at least 8 characters and include uppercase, lowercase, number, and special character"
+      );
+      return;
+    }
+
     try {
-      await resetUserPassword(tempEmail, password); // פונקציה בשירות
-      router.push("/"); // במקום /login עכשיו לוחץ לדף הסיסמה החדשה או לדף הבית
+      await resetUserPassword(tempEmail, password); 
+      router.push("/"); 
     } catch (err: any) {
       setError(err.message);
     }

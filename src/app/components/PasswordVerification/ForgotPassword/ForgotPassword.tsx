@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/app/store/useUserStore";
 import { sendTemporaryPassword } from "@/services/userService";
@@ -8,23 +8,49 @@ import { sendTemporaryPassword } from "@/services/userService";
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
 
+  const router = useRouter();
   const setTempEmail = useUserStore((state) => state.setTempEmail);
   const setTempPassword = useUserStore((state) => state.setTempPassword);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (cooldown > 0) {
+      timer = setInterval(() => {
+        setCooldown((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [cooldown]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage("");
 
+    if (cooldown > 0) return; 
+
     try {
-      const data = await sendTemporaryPassword(email); // הפניה לשירות
+      setLoading(true);
+      const data = await sendTemporaryPassword(email);
 
       setTempEmail(email);
       setTempPassword(data.tempPassword);
-      router.push("/reset-password"); 
+
+      setCooldown(30); 
+
+      router.push("/reset-password");
     } catch (err: any) {
       setMessage(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -40,7 +66,9 @@ export default function ForgotPasswordPage() {
         required
       />
 
-      <button type="submit">Send Temporary Password</button>
+      <button type="submit" disabled={loading || cooldown > 0}>
+        {cooldown > 0 ? `Wait ${cooldown}s` : "Send Temporary Password"}
+      </button>
 
       {message && <p style={{ color: "red" }}>{message}</p>}
     </form>

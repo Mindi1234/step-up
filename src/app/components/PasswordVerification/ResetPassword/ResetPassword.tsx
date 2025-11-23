@@ -5,22 +5,23 @@ import { useUserStore } from "@/app/store/useUserStore";
 import { resetUserPassword } from "@/services/userService";
 
 export default function ResetPassword() {
-  const [newPassword, setNewPassword] = useState("");
+  const [tempInput, setTempInput] = useState(""); // הסיסמה שהמשתמש מקיש
   const [error, setError] = useState("");
   const router = useRouter();
 
   const tempEmail = useUserStore((state) => state.tempEmail);
+  const tempPassword = useUserStore((state) => state.tempPassword); // הסיסמה שנשלחה למייל
 
-  const handleReset = async () => {
-    if (!newPassword) {
-      setError("Please enter a new password");
+  const handleVerify = async () => {
+    setError("");
+    if (tempInput !== tempPassword) {
+      setError("Temporary password is incorrect");
       return;
     }
 
     try {
-      await resetUserPassword(tempEmail, newPassword);
-      alert("Password updated successfully");
-      router.push("/new-password");
+      // כאן אפשר כבר לעבור לדף הסיסמה החדשה או לפתוח קומפוננטה אחרת
+      router.push("/new-password"); 
     } catch (err: any) {
       setError(err.message);
     }
@@ -28,15 +29,15 @@ export default function ResetPassword() {
 
   return (
     <div>
-      <h2>Reset Password</h2>
+      <h2>Enter Temporary Password</h2>
       <input
         type="password"
-        placeholder="Enter new password"
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
+        placeholder="Enter password from email"
+        value={tempInput}
+        onChange={(e) => setTempInput(e.target.value)}
       />
-      <button onClick={handleReset}>Set New Password</button>
-      {error && <p>{error}</p>}
+      <button onClick={handleVerify}>Verify</button>
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 }
