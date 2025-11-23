@@ -20,7 +20,7 @@ export default function ResetPassword() {
     try {
       await resetUserPassword(tempEmail, newPassword);
       alert("Password updated successfully");
-      router.push("/login");
+      router.push("/new-password");
     } catch (err: any) {
       setError(err.message);
     }

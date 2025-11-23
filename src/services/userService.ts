@@ -23,4 +23,18 @@ export async function resetUserPassword(email: string, newPassword: string) {
   
     return res.json();
   }
+  export async function sendTemporaryPassword(email: string) {
+    const res = await fetch("/api/forgot-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
   
+    const data = await res.json();
+  
+    if (!res.ok) {
+      throw new Error(data.message || "Failed to send temporary password");
+    }
+  
+    return data; 
+  }
