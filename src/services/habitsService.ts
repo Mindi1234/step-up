@@ -109,3 +109,15 @@ export async function updateHabitStatus(habitId: string, date?: Date) {
   const data = await response.json();
   return data.habit;
 }
+export async function deleteHabit(habitId: string): Promise<{ success: boolean }> {
+  const response = await fetch(`/api/habits/${habitId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete habit");
+  }
+
+  return response.json();
+}
