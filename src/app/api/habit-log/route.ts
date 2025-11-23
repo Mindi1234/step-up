@@ -1,8 +1,8 @@
 import { dbConnect } from "@/lib/DB";
 import HabitLog from "@/models/HabitLog";
-import { endOfDay, startOfDay } from "@/utils/date";
 import { NextResponse } from "next/server";
 import { authenticate } from "@/lib/server/authMiddleware";  
+import { endOfDayUTC, startOfDayUTC } from "@/utils/date";
 
 export async function GET(req: Request) {
     try {
@@ -22,8 +22,8 @@ export async function GET(req: Request) {
         }
 
         const date = new Date(dateParam);
-        const start = startOfDay(date);
-        const end = endOfDay(date);
+        const start = startOfDayUTC(date);
+        const end = endOfDayUTC(date);
 
         const logs = await HabitLog.find({
             userId: userId,
