@@ -13,24 +13,28 @@ export default function TodayHabits({ selectedDate }: { selectedDate: Date }) {
     const fetchHabitsForDate = async () => {
       setLoading(true);
       try {
-        const habitsForToday = await getTodayHabits(selectedDate);
-        setHabits(habitsForToday); 
+        const todaysHabits = await getTodayHabits(selectedDate);
+        setHabits(todaysHabits);
       } catch (err) {
-        console.error(err);
+        console.error("Error loading today habits:", err);
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchHabitsForDate();
   }, [selectedDate]);
   
   const toggleHabitStatus = async (habitId: string) => {
-    const updatedHabit = await updateHabitStatus(habitId, selectedDate);
+    try {
+      const updatedHabit = await updateHabitStatus(habitId, selectedDate);
 
-    setHabits((prev) =>
-      prev.map((h) => (h._id === habitId ? updatedHabit : h))
-    );
+      setHabits((prev) =>
+        prev.map((h) => (h._id === habitId ? updatedHabit : h))
+      );
+    } catch (err) {
+      console.error("Failed updating habit", err);
+    }
   };
 
   const getHabitIcon = (habit: ITodayHabit) => {
