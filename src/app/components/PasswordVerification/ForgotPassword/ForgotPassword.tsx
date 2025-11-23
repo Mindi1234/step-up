@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/app/store/useUserStore";
+import { sendTemporaryPassword } from "@/services/userService";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -17,24 +18,13 @@ export default function ForgotPasswordPage() {
     setMessage("");
 
     try {
-      const res = await fetch("/api/forgot-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+      const data = await sendTemporaryPassword(email); // הפניה לשירות
 
-      const data = await res.json();
-
-      if (res.ok) {
-        setTempEmail(email);
-        setTempPassword(data.tempPassword);
-        router.push("/reset-password");
-      } else {
-        setMessage(data.message);
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage("Something went wrong");
+      setTempEmail(email);
+      setTempPassword(data.tempPassword);
+      router.push("/reset-password"); 
+    } catch (err: any) {
+      setMessage(err.message);
     }
   };
 
@@ -52,7 +42,7 @@ export default function ForgotPasswordPage() {
 
       <button type="submit">Send Temporary Password</button>
 
-      {message && <p>{message}</p>}
+      {message && <p style={{ color: "red" }}>{message}</p>}
     </form>
   );
 }
