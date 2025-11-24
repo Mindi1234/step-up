@@ -2,9 +2,7 @@
 
 import { useState, useEffect } from "react";
 import styles from "./DaysSlider.module.css";
-function cleanDate(date:Date){
-  return new Date(date.getFullYear(),date.getMonth(),date.getDate());
-}
+import { toUTCDate } from "@/utils/date";
 
 function getNext7Days() {
   const days = [];
@@ -17,7 +15,7 @@ function getNext7Days() {
     days.push({
       date: d.getDate(),
       day: d.toLocaleString("en-US", { weekday: "short" }),
-      full: cleanDate(d), 
+      full: toUTCDate(d), 
       isToday: i === 0,
     });
   }

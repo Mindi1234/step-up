@@ -3,16 +3,16 @@
 import { useState } from "react";
 import useProgress from "@/app/home/hooks/useProgress";
 import { useUserStore } from "@/app/store/useUserStore";
-import { startOfDay } from "@/utils/date";
 import { getEncouragingMessage } from "@/utils/progressHabit";
 import styles from "./ProgressBar.module.css";
+import { startOfDayUTC } from "@/utils/date";
 
 
 export default function ProgressBar() {
     const { user } = useUserStore();
     const userId = user?.id!;
     
-    const [today] = useState(() => startOfDay(new Date()));
+    const [today] = useState(() => startOfDayUTC(new Date()));
     const { total, done, percent } = useProgress(userId, today);
 
     if (!userId) {

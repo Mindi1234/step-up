@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { dbConnect } from "@/lib/DB";
-import Category from "@/models/Category";
 import Habit from "@/models/Habit";
 import HabitLog from "@/models/HabitLog";
 import { authenticate } from "@/lib/server/authMiddleware";
+import { endOfDayUTC, getDayIndexUTC, startOfDayUTC } from "@/utils/date";
 
 export async function GET(request: Request) {
   try {
@@ -26,9 +26,9 @@ export async function GET(request: Request) {
         { status: 400 }
       );
     }
-    
+
     const [year, month, day] = dateParam.split('-').map(Number);
-    
+
     if (!year || !month || !day) {
       return NextResponse.json(
         { message: "Invalid date format. Use YYYY-MM-DD" },
@@ -36,24 +36,25 @@ export async function GET(request: Request) {
       );
     }
 
-    const localDate = new Date(year, month - 1, day, 12, 0, 0); 
-    const todayIndex = localDate.getDay();
+    const rawDate = new Date(Date.UTC(year, month - 1, day));
 
-    const startOfDay = new Date(year, month - 1, day, 0, 0, 0, 0);
-    const endOfDay = new Date(year, month - 1, day, 23, 59, 59, 999);
+    const todayIndex = getDayIndexUTC(rawDate);
+    const startOfDay = startOfDayUTC(rawDate);
+    const endOfDay = endOfDayUTC(rawDate);
+
 
     const habitsToday = await Habit.find({
       userId: user._id,
       [`days.${todayIndex}`]: true,
     }).populate("categoryId");
-    
+
 
     const logsToday = await HabitLog.find({
-        userId: user._id,
-        date: { $gte: startOfDay, $lte: endOfDay },
-      });
+      userId: user._id,
+      date: { $gte: startOfDay, $lte: endOfDay },
+    });
 
-    
+
 
     const habitsWithStatus = habitsToday.map((habit) => {
       const h = habit as any;
@@ -63,16 +64,16 @@ export async function GET(request: Request) {
         name: habit.name,
         description: habit.description,
         category: habit.categoryId,
-        isDone: log ? log.isDone : false,    
-    };  
-        
+        isDone: log ? log.isDone : false,
+      };
+
     });
 
     return NextResponse.json(habitsWithStatus);
 
   } catch (error: any) {
-   console.error("GET /habits/today error:", error);
-    console.error("Error stack:", error.stack); 
+    console.error("GET /habits/today error:", error);
+    console.error("Error stack:", error.stack);
     return NextResponse.json(
       { message: error.message || "Failed to fetch today's habits" },
       { status: 500 }

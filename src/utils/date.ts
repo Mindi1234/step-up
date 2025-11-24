@@ -1,15 +1,34 @@
-export function startOfDay(date: Date) {
-    const d = new Date(date);
-    d.setHours(0, 0, 0, 0);
-    return d;
+
+export function toUTCDate(date: Date) {
+    return new Date(Date.UTC(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate()
+    ));
 }
 
-export function endOfDay(date: Date) {
-    const d = new Date(date);
-    d.setHours(23, 59, 59, 999);
-    return d;
+
+export function startOfDayUTC(date: Date) {
+    return new Date(Date.UTC(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        0, 0, 0, 0
+    ));
 }
 
-export function getDayIndex(date: Date) {
-    return date.getDay();
+
+export function endOfDayUTC(date: Date) {
+    return new Date(Date.UTC(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        23, 59, 59, 999
+    ));
+}
+
+
+export function getDayIndexUTC(date: Date) {
+    const utc = toUTCDate(date);
+    return utc.getUTCDay(); 
 }
