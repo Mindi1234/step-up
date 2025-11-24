@@ -8,6 +8,7 @@ import { toUTCDate } from "@/utils/date";
 import { updateHabitStatus } from "@/services/client/habitLogService";
 
 export default function TodayHabits({ selectedDate }: { selectedDate: Date }) {
+  const storeHabits = useHabitStore((state) => state.habits); 
   const [habits, setHabits] = useState<ITodayHabit[]>([]);
   const [loading, setLoading] = useState(true);
 
