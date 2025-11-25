@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
-import { ITodayHabit } from "@/interfaces/ITodayHabit";
-import styles from "./TodayHabits.module.css";
-import { toUTCDate } from "@/utils/date";
 import { useTodayHabitStore } from "@/app/store/useTodayHabitStore";
 import { useHabitLogStore } from "@/app/store/useHabitLogStore";
 import { useUserStore } from "@/app/store/useUserStore";
 import { getCategoryStyle } from "@/utils/todayHabitsHelper";
+import { toUTCDate } from "@/utils/date";
+import { ITodayHabit } from "@/interfaces/ITodayHabit";
+import styles from "./TodayHabits.module.css";
 
 export default function TodayHabits({ selectedDate }: { selectedDate: Date }) {
   const {
