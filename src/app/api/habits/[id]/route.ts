@@ -18,7 +18,7 @@ export async function GET(req: Request, { params }: any) {
       return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
     }
 
-    const habit = await Habit.findOne({ _id: id, userId }); // ← תיקון אבטחה
+    const habit = await Habit.findOne({ _id: id, userId });
 
     if (!habit) {
       return NextResponse.json({ message: "Habit not found" }, { status: 404 });

@@ -29,7 +29,7 @@ export async function getTodayHabits(date?: Date, retries = 3) {
 
       if (!response.ok) {
         if (i < retries - 1 && response.status === 500) {
-          console.log(`Retry ${i + 1}/${retries} for getTodayHabits`);
+          
           await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
           continue;
         }
@@ -49,25 +49,25 @@ export async function getTodayHabits(date?: Date, retries = 3) {
   }
 }
 
-export async function updateHabitStatus(habitId: string, date?: Date) {
-  const targetDate = date || new Date();
+// export async function updateHabitStatus(habitId: string, date?: Date) {
+//   const targetDate = date || new Date();
 
-  const dateString = targetDate.toISOString().split("T")[0];
+//   const dateString = targetDate.toISOString().split("T")[0];
 
-  const response = await fetch(`/api/habits/${habitId}/toggle`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify({ date: dateString }),
-  });
+//   const response = await fetch(`/api/habits/${habitId}/toggle`, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     credentials: "include",
+//     body: JSON.stringify({ date: dateString }),
+//   });
 
-  if (!response.ok) {
-    throw new Error("Failed to update habit status");
-  }
+//   if (!response.ok) {
+//     throw new Error("Failed to update habit status");
+//   }
 
-  const data = await response.json();
-  return data.habit;
-}
+//   const data = await response.json();
+//   return data.habit;
+// }
 export async function deleteHabit(habitId: string): Promise<{ success: boolean }> {
   const response = await fetch(`/api/habits/${habitId}`, {
     method: "DELETE",

@@ -5,12 +5,12 @@ import { useUserStore } from "@/app/store/useUserStore";
 import styles from "./ResetPassword.module.css";
 
 export default function ResetPassword() {
-  const [tempInput, setTempInput] = useState(""); // הסיסמה שהמשתמש מקיש
+  const [tempInput, setTempInput] = useState(""); 
   const [error, setError] = useState("");
   const router = useRouter();
 
   const tempEmail = useUserStore((state) => state.tempEmail);
-  const tempPassword = useUserStore((state) => state.tempPassword); // הסיסמה שנשלחה למייל
+  const tempPassword = useUserStore((state) => state.tempPassword); 
 
   const handleVerify = async () => {
     setError("");
