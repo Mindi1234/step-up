@@ -5,6 +5,7 @@ import ProfileSidebarWrapper from "./components/ProfileSidebarWrapper/ProfileSid
 import BottomNavbar from "./components/BottomNavbar/BottomNavbar";
 import NewHabit from "./components/Habit/AddHabit/NewHabit/NewHabit";
 import LoginForm from "./components/User/LoginForm/LoginForm";
+import LandingPage from "./components/LandingPage/LandingPage";
 
 
 
@@ -41,6 +42,7 @@ export default async function RootLayout({
       >
         <ProfileSidebarWrapper />
         {children}
+        {/* <LandingPage />  */}
         {/* <LoginForm />  */}
         <NewHabit/>
         <footer>
