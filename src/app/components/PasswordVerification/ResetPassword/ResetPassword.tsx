@@ -5,12 +5,12 @@ import { useUserStore } from "@/app/store/useUserStore";
 import { resetUserPassword } from "@/services/client/userService";
 
 export default function ResetPassword() {
-  const [tempInput, setTempInput] = useState(""); // הסיסמה שהמשתמש מקיש
+  const [tempInput, setTempInput] = useState(""); 
   const [error, setError] = useState("");
   const router = useRouter();
 
   const tempEmail = useUserStore((state) => state.tempEmail);
-  const tempPassword = useUserStore((state) => state.tempPassword); // הסיסמה שנשלחה למייל
+  const tempPassword = useUserStore((state) => state.tempPassword); 
 
   const handleVerify = async () => {
     setError("");
@@ -20,7 +20,7 @@ export default function ResetPassword() {
     }
 
     try {
-      // כאן אפשר כבר לעבור לדף הסיסמה החדשה או לפתוח קומפוננטה אחרת
+      
       router.push("/new-password"); 
     } catch (err: any) {
       setError(err.message);

@@ -26,7 +26,6 @@ export default function NewPasswordComponent() {
       return;
     }
 
-    // בדיקה שהסיסמה עומדת בכללי האבטחה
     if (!isValidPassword(password)) {
       setError(
         "Password must be at least 8 characters and include uppercase, lowercase, number, and special character"

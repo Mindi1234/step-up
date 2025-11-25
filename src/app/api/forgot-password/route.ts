@@ -7,13 +7,10 @@ export async function POST(req: NextRequest) {
     const { email } = await req.json();
     if (!email) return NextResponse.json({ message: "Email required" }, { status: 400 });
 
-    // מחולל סיסמה זמנית
     const tempPassword = generateTemporaryPassword();
 
-    // כאן תעדכני במסד שלך את הסיסמה הזמנית למשתמש הזה
-    // updateUserTempPassword(email, tempPassword);
+    
 
-    // שליחת מייל
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {

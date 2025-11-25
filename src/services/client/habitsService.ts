@@ -29,7 +29,7 @@ export async function getTodayHabits(date?: Date, retries = 3) {
 
       if (!response.ok) {
         if (i < retries - 1 && response.status === 500) {
-          console.log(`Retry ${i + 1}/${retries} for getTodayHabits`);
+          
           await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
           continue;
         }
