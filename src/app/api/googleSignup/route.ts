@@ -1,7 +1,7 @@
 import { dbConnect } from "@/lib/DB";
 import User from "@/models/User";
 import { NextResponse } from "next/server";
-import { createAuthResponse } from "@/lib/server/createAuthResponse"; // ⭐ שימוש בפונקציה המשותפת
+import { createAuthResponse } from "@/lib/server/createAuthResponse";  
 
 export async function POST(request: Request) {
   try {

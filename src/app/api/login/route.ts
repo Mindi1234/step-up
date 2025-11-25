@@ -3,14 +3,12 @@ import { dbConnect } from "@/lib/DB";
 import User from "@/models/User";
 import bcrypt from "bcrypt";
 import { isValidEmail, isValidPassword } from "@/services/server/validationService";
-import { createAuthResponse } from "@/lib/server/createAuthResponse";   // ⭐ שימוש בפונקציה אחידה
+import { createAuthResponse } from "@/lib/server/createAuthResponse";   
 
 export async function POST(request: Request) {
   try {
     await dbConnect();
     const { email, password } = await request.json();
-
-    console.log("Login attempt:", { email });
 
     if (!email || !password) {
       return NextResponse.json(

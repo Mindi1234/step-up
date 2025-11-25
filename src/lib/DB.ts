@@ -33,9 +33,7 @@ if (!global.mongoose) {
 }
 
 export async function dbConnect() {
-  // אם יש connection קיים, השתמש בו
   if (cached.conn) {
-    console.log("📦 Using cached MongoDB connection");
     return cached.conn;
   }
 
@@ -48,9 +46,7 @@ export async function dbConnect() {
       socketTimeoutMS: 45000,
     };
 
-    console.log("🔌 Creating new MongoDB connection...");
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      console.log("✅ Connected to MongoDB Atlas");
       return mongoose;
     });
   }
@@ -59,7 +55,6 @@ export async function dbConnect() {
     cached.conn = await cached.promise;
   } catch (e) {
     cached.promise = null;
-    console.error("❌ MongoDB connection failed:", e);
     throw e;
   }
 

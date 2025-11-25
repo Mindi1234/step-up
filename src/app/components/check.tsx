@@ -1,10 +1,8 @@
 "use client"
-import Image from "next/image";
 import { useCategoriesStore } from "../store/useCategoriesStore";
 
 export default function CategoriesPreview() {
     const categories=useCategoriesStore((state)=>state.categories)
- // פונקציה להמרת HEX ל-RGBA עם שקיפות עדינה
 function hexToRGBA(hex: string, opacity: number) {
   let c: any = hex.replace("#", "");
   if (c.length === 3) {
@@ -34,7 +32,7 @@ function hexToRGBA(hex: string, opacity: number) {
             alignItems: "center",
             padding: "15px",
             borderRadius: "18px",
-            background: hexToRGBA(cat.colorTheme!, 0.25), // ✨ שקיפות עדינה
+            background: hexToRGBA(cat.colorTheme!, 0.25), 
             border: "1px solid rgba(0,0,0,0.05)",
           }}
         >

@@ -33,7 +33,6 @@ export default function SignupForm() {
   const router = useRouter();
   const setUser = useUserStore((state) => state.setUser);
 
-  // RESET ERRORS
   const resetErrors = () => {
     setErrors({
       name: "",
@@ -45,12 +44,10 @@ export default function SignupForm() {
     });
   };
 
-  // HANDLE SUBMIT
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     resetErrors();
 
-    // CLIENT-SIDE REQUIRED VALIDATION
     const newErrors: any = {};
     if (!name) newErrors.name = "Name is required";
     if (!email) newErrors.email = "Email is required";
@@ -63,7 +60,6 @@ export default function SignupForm() {
       return;
     }
 
-    // SEND TO SERVER
     const { ok, data } = await signupService({
       name,
       password,
@@ -73,7 +69,6 @@ export default function SignupForm() {
     });
 
     if (!ok) {
-      // SERVER VALIDATION — ALL FIELDS TOGETHER
       if (data.errors) {
         setErrors((prev) => ({ ...prev, ...data.errors }));
       } else {
@@ -86,7 +81,6 @@ export default function SignupForm() {
     router.push(ROUTES.HOME);
   };
 
-  // GOOGLE SIGNUP
   const handleGoogleSignIn = async () => {
     if (loading) return;
     setLoading(true);
