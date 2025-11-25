@@ -9,10 +9,7 @@ export default function useHabitsForDay(userId: string, date: Date) {
 
   useEffect(() => {
     if (!userId || !date) return;
-
-    if (habits.length === 0) {
-      fetchHabits();
-    }
+      fetchHabits(); 
   }, [userId, date]);
 
 
