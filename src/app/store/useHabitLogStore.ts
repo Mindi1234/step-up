@@ -4,12 +4,14 @@ import { IHabitLog } from "@/interfaces/IHabitLog";
 import { getHabitLogsForDate, createHabitLog } from "@/services/client/habitLogService";
 
 interface HabitLogStore {
-  logs: IHabitLog[];
+  logs: IHabitLog[];         
   loading: boolean;
   error: string | null;
 
-  fetchLogs: (userId: string, date: string) => Promise<void>;
-  addLog: (habitId: string, date: Date) => Promise<void>;
+  fetchLogs: (userId: string, date: string) => Promise<void>;  
+  addLog: (habitId: string, date: Date) => Promise<void>;       
+
+ 
 }
 
 export const useHabitLogStore = create<HabitLogStore>()(
@@ -29,7 +31,6 @@ export const useHabitLogStore = create<HabitLogStore>()(
         }
       },
 
-      
       addLog: async (habitId, date) => {
         set({ loading: true, error: null });
         try {

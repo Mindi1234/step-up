@@ -1,6 +1,5 @@
 import { useHabitLogStore } from "@/app/store/useHabitLogStore";
 import { IHabitLog } from "@/interfaces/IHabitLog";
-import { getHabitLogsForDate } from "@/services/client/habitLogService";
 import { useEffect, useState } from "react";
 
 export default function useHabitLogForDay(userId: string, date: Date) {
@@ -21,6 +20,6 @@ export default function useHabitLogForDay(userId: string, date: Date) {
     }
 
     load();
-  }, [userId, date, logs]);
+  }, [userId, date]);
     return logs;
 }
