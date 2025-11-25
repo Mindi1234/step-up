@@ -24,14 +24,17 @@ export async function getHabitsByDateService(userId: string, date: Date) {
 
         let log = await HabitLog.findOne({
             habitId: habit._id,
-            userId:userId,
-            date: { $gte: start, $lte: end },
+            userId,
+            date: {
+                $gte: startOfDayUTC(date),
+                $lt: endOfDayUTC(date)
+            }
         });
 
         if (!log) {
             log = await HabitLog.create({
                 habitId: habit._id,
-                userId:userId,
+                userId: userId,
                 date: start,
                 isDone: false,
             });
