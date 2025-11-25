@@ -5,20 +5,24 @@ import { useHabitStore } from "@/app/store/useHabitStore";
 import { useCategoriesStore } from "@/app/store/useCategoriesStore";
 import { useModalStore } from "@/app/store/useModalStore";
 import { useUserStore } from "@/app/store/useUserStore";
+import { useTodayHabitStore } from "@/app/store/useTodayHabitStore";
 
 export default function NewHabit() {
   const isHabitModalOpen = useModalStore((state) => state.isHabitModalOpen);
   const closeHabitModal = useModalStore((state) => state.closeHabitModal);
   const addHabit = useHabitStore((state) => state.addHabit);
+
   const { categories, fetchCategories } = useCategoriesStore();
   const user = useUserStore((state) => state.user);
+
+  const fetchTodayHabits = useTodayHabitStore((state) => state.fetchTodayHabits);
 
   useEffect(() => {
     fetchCategories();
   }, []);
 
   const handleAddHabit = async (data: any) => {
-    if (!user?.id) return; 
+    if (!user?.id) return;
 
     await addHabit({
       userId: user.id,
@@ -28,6 +32,8 @@ export default function NewHabit() {
       reminderTime: data.reminderTime,
       days: data.days,
     });
+
+    await fetchTodayHabits(new Date());
 
     closeHabitModal();
   };
