@@ -9,7 +9,7 @@ interface TodayHabitsStore {
   loading: boolean;
   error: string | null;
 
-  fetchTodayHabits: (date: Date) => Promise<void>;
+  fetchTodayHabits: (date: string) => Promise<void>;
   toggleStatus: (logId: string) => Promise<void>;
 }
 
@@ -18,7 +18,7 @@ export const useTodayHabitStore = create<TodayHabitsStore>((set, get) => ({
   loading: false,
   error: null,
 
-  fetchTodayHabits: async (date: Date) => {
+  fetchTodayHabits: async (date: string) => {
     set({ loading: true, error: null });
 
     try {

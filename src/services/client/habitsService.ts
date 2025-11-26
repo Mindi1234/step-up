@@ -113,10 +113,9 @@ export async function updateHabit(habitId: string, updatedData: any) {
   return res.json(); 
 }
 
-export async function getHabitsByDate(date: Date) {
-  const dateString = date.toISOString().split("T")[0];
+export async function getHabitsByDate(date: string) {
 
-  const res = await fetch(`/api/habits/by-date?date=${dateString}`, {
+  const res = await fetch(`/api/habits/by-date?date=${date}`, {
     method: "GET",
     credentials: "include",
   });
