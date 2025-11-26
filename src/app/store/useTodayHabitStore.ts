@@ -9,7 +9,7 @@ interface TodayHabitsStore {
   loading: boolean;
   error: string | null;
 
-  fetchTodayHabits: (date: Date) => Promise<void>;
+  fetchTodayHabits: (date: string) => Promise<void>;
   toggleStatus: (logId: string) => Promise<void>;
 }
 
