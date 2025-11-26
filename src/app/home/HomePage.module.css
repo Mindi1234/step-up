@@ -87,7 +87,14 @@
     color: #183c5c;
 }
 
-/* Responsive adjustments */
+.pageContainer {
+    height: 100vh; 
+    overflow-y: auto; 
+    padding-top: 80px; 
+    box-sizing: border-box; 
+    background-color: #f8fbff;
+}
+
 @media (max-width: 480px) {
     .progressCard {
         padding: 20px;
