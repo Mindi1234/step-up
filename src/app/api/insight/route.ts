@@ -21,6 +21,17 @@ export async function GET(request: Request){
         .lean();
     
         const completed = logs.filter(l => l.isDone).length;
+        const { searchParams } = new URL(request.url);
+        const dateParam = searchParams.get("date");
+        
+        const todayKey = dateParam || new Date().toISOString().split("T")[0];
+        const completedToday = logs.filter(log => {
+          const logDateKey = log.date.toISOString().split("T")[0];
+          return logDateKey === todayKey && log.isDone;
+        }).length;
+
+        console.log("Today Key:", todayKey, "Completed Today:", completedToday);
+        
 
         const logsByDate: Record<string, any[]> = {};
         logs.forEach(log => {
@@ -52,15 +63,12 @@ export async function GET(request: Request){
               currentStreakDate = prev.toISOString().split("T")[0];
             }
           }
-            console.log("HABITS:", habits);
-            console.log("LOGS:", logs);
-            console.log("USER:", userId);
-
 
           return NextResponse.json({
             dayStreak: streak,
             achievements,
             completed,
+            completedToday,
           });
 
     
