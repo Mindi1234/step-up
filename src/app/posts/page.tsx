@@ -6,8 +6,9 @@ import PostList from "@/app/components/Post/PostList/PostList";
 export default function PostsPage() {
   return (
     <>
-      {/* <PostList /> */}
-      <AddPost />
-      </>
-  );
+      <PostList />
+    </>
+
+  )
+
 }
