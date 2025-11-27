@@ -16,3 +16,12 @@
   position: relative;
 }
 
+@media (max-width: 480px) {
+  .habitsHeader {
+    font-size: 1rem;
+  }
+  
+  .habitsHeader::after {
+    width: 35px;
+  }
+}
