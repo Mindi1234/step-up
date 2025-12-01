@@ -38,7 +38,6 @@ export default function CategoryGraph() {
     return (
         <div className={styles.container}>
 
-            {/* ⭐ הסלקטור ממורכז */}
             <div className={styles.selectorWrapper}>
                 <RangeSelector
                     value={range}

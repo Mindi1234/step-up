@@ -7,7 +7,6 @@ import RangeSelector from "../RangeSelector/RangeSelector";
 export default function WeeklyGraph() {
     const [range, setRange] = useState<7 | 30>(7);
 
-    // מושכים רק את מה שצריך → כדי למנוע רינדורים מיותרים
     const stats7 = useStatisticsStore(s => s.stats7);
     const stats30 = useStatisticsStore(s => s.stats30);
 
@@ -20,7 +19,6 @@ export default function WeeklyGraph() {
         fetchStatisticsFor(range);
     }, [range, fetchStatisticsFor]);
 
-    // בחירת דאטה
     const stats = range === 7 ? stats7 : stats30;
 
     // בחירת לודינג נכון
@@ -42,7 +40,7 @@ export default function WeeklyGraph() {
             {loading ? (
                 <p>Loading…</p>
             ) : (
-                <p>Graph goes here…</p>  // תחליפי בגרף האמיתי
+                <p>Graph goes here…</p>  
             )}
         </div>
     );

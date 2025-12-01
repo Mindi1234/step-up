@@ -28,7 +28,6 @@ export default function TinyStats() {
     return (
         <div className={styles.container}>
 
-            {/* מרכזת את הסלקטור */}
             <div className={styles.selectorWrapper}>
                 <RangeSelector
                     value={range}
