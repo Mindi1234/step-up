@@ -8,13 +8,13 @@ import styles from "./Heatmap.module.css";
 export default function Heatmap() {
   const RANGE = 365;
 
-  const { stats365, loading, fetchStatisticsFor } = useStatisticsStore();
+  const { stats365, loading365, fetchStatisticsFor } = useStatisticsStore();
 
   useEffect(() => {
     fetchStatisticsFor(RANGE);
   }, []);
 
-  if (loading) {
+  if (loading365) {
     return (
       <div className={styles.container}>
         <p className={styles.loading}>Loading yearly heatmap…</p>
