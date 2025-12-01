@@ -1,4 +1,4 @@
-'use client'; // חובה בגלל useRouter
+'use client'; 
 
 import { useRouter } from 'next/navigation';
 import { LogIn } from 'lucide-react';
