@@ -5,7 +5,7 @@ import { useStatisticsStore } from "@/app/store/useStatisticsStore";
 import RangeSelector from "../RangeSelector/RangeSelector";
 import WaveProgressChart from "../WaveProgressChart/WaveProgressChart";
 import Loader from "../../Loader/Loader";
-
+import styles from '@/app/components/Statistics/WeeklyGraph/WeeklyGraph.module.css'
 export default function WeeklyGraph() {
     const [range, setRange] = useState<7 | 30>(7);
 
@@ -27,14 +27,16 @@ export default function WeeklyGraph() {
 
     return (
         <div style={{ marginBottom: "1.5rem", padding: "0 8px" }}>
-            <RangeSelector
-                value={range}
-                onChange={setRange}
-                options={[
-                    { value: 7, label: "Weekly" },
-                    { value: 30, label: "Monthly" },
-                ]}
-            />
+            <div className={styles.selectorWrapper}>
+                <RangeSelector
+                    value={range}
+                    onChange={setRange}
+                    options={[
+                        { value: 7, label: "Weekly" },
+                        { value: 30, label: "Monthly" },
+                    ]}
+                />
+            </div>
 
             {loading ? <Loader /> : <WaveProgressChart data={stats} />}
         </div>
