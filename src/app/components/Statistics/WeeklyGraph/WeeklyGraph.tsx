@@ -3,11 +3,12 @@
 import { useState, useEffect } from "react";
 import { useStatisticsStore } from "@/app/store/useStatisticsStore";
 import RangeSelector from "../RangeSelector/RangeSelector";
+import WaveProgressChart from "../WaveProgressChart/WaveProgressChart";
+import Loader from "../../Loader/Loader";
 
 export default function WeeklyGraph() {
     const [range, setRange] = useState<7 | 30>(7);
 
-    // מושכים רק את מה שצריך → כדי למנוע רינדורים מיותרים
     const stats7 = useStatisticsStore(s => s.stats7);
     const stats30 = useStatisticsStore(s => s.stats30);
 
@@ -20,14 +21,12 @@ export default function WeeklyGraph() {
         fetchStatisticsFor(range);
     }, [range, fetchStatisticsFor]);
 
-    // בחירת דאטה
     const stats = range === 7 ? stats7 : stats30;
 
-    // בחירת לודינג נכון
     const loading = range === 7 ? loading7 : loading30;
 
     return (
-        <div style={{ marginBottom: "2rem" }}>
+        <div style={{ marginBottom: "1.5rem", padding: "0 8px" }}>
             <RangeSelector
                 value={range}
                 onChange={setRange}
@@ -37,13 +36,8 @@ export default function WeeklyGraph() {
                 ]}
             />
 
-            <h3>{range === 7 ? "Weekly Trend" : "Monthly Trend"}</h3>
-
-            {loading ? (
-                <p>Loading…</p>
-            ) : (
-                <p>Graph goes here…</p>  // תחליפי בגרף האמיתי
-            )}
+            {loading ? <Loader /> : <WaveProgressChart data={stats} />}
         </div>
     );
+
 }
