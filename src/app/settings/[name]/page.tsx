@@ -1,18 +1,21 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toUrlName } from "@/app/components/Settings/CategoryItem/CategoryItem";
 import HabitItem from "@/app/components/Settings/HabitItem/HabitItem";
 import { useCategoriesStore } from "@/app/store/useCategoriesStore";
 import { useHabitStore } from "@/app/store/useHabitStore";
 import { useParams } from "next/navigation";
 import Loader from "@/app/components/Loader/Loader";
+import HabitForm from "@/app/components/Habit/AddHabit/HabitForm/HabitForm";
+import { IHabit } from "@/interfaces/IHabit";
 
 export default function CategoryPage() {
     const { name } = useParams();
+    const [editingHabit, setEditingHabit] = useState<IHabit | null>(null);
 
     const { categories, fetchCategories, loading: catLoading } = useCategoriesStore();
-    const { habits, fetchHabits, loading: habitsLoading, deleteHabit } = useHabitStore();
+    const { habits, fetchHabits, loading: habitsLoading, deleteHabit, updateHabit } = useHabitStore();
 
     useEffect(() => {
         fetchCategories();
@@ -35,14 +38,31 @@ export default function CategoryPage() {
         (h) => String(h.categoryId) === String(category._id)
     );
 
-    const handleEdit = (habitId: string) => {
-        console.log("Edit habit:", habitId);
+    const handleEdit = (habit: IHabit) => {
+        setEditingHabit(habit);
+    };
+
+    const handleUpdateHabit = async (data: any) => {
+        if (!editingHabit?._id) return;
+
+        await updateHabit(editingHabit.id, {
+            name: data.name,
+            description: data.description,
+            categoryId: data.categoryId,
+            reminderTime: data.reminderTime,
+            days: data.days,
+        });
+
+        // Refresh the list
+        await fetchHabits();
+        setEditingHabit(null);
     };
 
     const handleDelete = async (habitId: string) => {
         if (confirm("Are you sure you want to delete this habit?")) {
             await deleteHabit(habitId);
-            await fetchHabits(); 
+            // Refresh the list after deletion
+            await fetchHabits();
         }
     };
 
@@ -61,7 +81,7 @@ export default function CategoryPage() {
                     <HabitItem 
                         key={habit.id} 
                         habit={habit}
-                        onEdit={() => handleEdit(habit.id)}
+                        onEdit={() => handleEdit(habit)}
                         onDelete={() => handleDelete(habit.id)}
                     />
                 ))}
@@ -71,6 +91,22 @@ export default function CategoryPage() {
                 <p style={{ marginTop: "20px", color: "#9ca3af" }}>
                     No habits in this category yet.
                 </p>
+            )}
+
+            {/* Edit Modal */}
+            {editingHabit && (
+                <HabitForm
+                    categories={categories}
+                    onSubmit={handleUpdateHabit}
+                    onCancel={() => setEditingHabit(null)}
+                    initialData={{
+                        name: editingHabit.name,
+                        description: editingHabit.description || "",
+                        categoryId: String(editingHabit.categoryId),
+                        reminderTime: editingHabit.reminderTime,
+                        days: editingHabit.days || [false, false, false, false, false, false, false]
+                    }}
+                />
             )}
         </div>
     );

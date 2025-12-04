@@ -65,19 +65,35 @@ export async function deleteHabitWithFutureLogs(
     habitId: string,
     userId: string
 ) {
+    if (!mongoose.Types.ObjectId.isValid(habitId)) {
+        throw new Error("Invalid habit ID");
+    }
+
     const objectId = new mongoose.Types.ObjectId(habitId);
+    const userIdObjectId = typeof userId === 'string' 
+        ? new mongoose.Types.ObjectId(userId) 
+        : userId;
 
-    await Habit.deleteOne({ _id: objectId, userId });
+    // Delete the habit
+    const deleteResult = await Habit.deleteOne({ _id: objectId, userId: userIdObjectId });
 
+    if (deleteResult.deletedCount === 0) {
+        throw new Error("Habit not found or already deleted");
+    }
+
+    // Delete future logs
     const today = startOfDayUTC(new Date());
-
-    await HabitLog.deleteMany({
+    const logsDeleteResult = await HabitLog.deleteMany({
         habitId: objectId,
-        userId,
+        userId: userIdObjectId,
         date: { $gte: today },
     });
 
-    return { ok: true };
+    return { 
+        ok: true,
+        deletedCount: deleteResult.deletedCount,
+        logsDeletedCount: logsDeleteResult.deletedCount
+    };
 }
 
 export async function updateHabitWithFutureLogs(
