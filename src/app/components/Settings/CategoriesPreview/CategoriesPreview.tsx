@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useCategoriesStore } from "@/app/store/useCategoriesStore";
 import CategoryItem from "../CategoryItem/CategoryItem";
 import styles from "@/app/components/Settings/CategoriesPreview/CategoriesPreview.module.css";
+import Loader from "../../Loader/Loader";
 
 export default function CategoriesPreview() {
     const { categories, fetchCategories, loading } = useCategoriesStore();
@@ -14,14 +15,7 @@ export default function CategoriesPreview() {
 
     // Loading State
     if (loading) {
-        return (
-            <div className={styles.container}>
-                <div className={styles.loadingContainer}>
-                    <div className={styles.loadingSpinner}></div>
-                    <p className={styles.loadingText}>Loading categories...</p>
-                </div>
-            </div>
-        );
+        return <Loader />;
     }
 
     // Empty State

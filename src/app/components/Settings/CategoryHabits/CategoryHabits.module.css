@@ -271,6 +271,108 @@
   }
 }
 
+/* Delete Confirmation Modal */
+.deleteModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(24, 60, 92, 0.7);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  padding: 16px;
+  animation: fadeIn 0.2s ease;
+}
+
+.deleteContent {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 28px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 12px 40px rgba(24, 60, 92, 0.4);
+  animation: slideUp 0.3s ease;
+  text-align: center;
+}
+
+.deleteIcon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.15));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
+.deleteTitle {
+  font-size: 22px;
+  font-weight: 700;
+  color: #183c5c;
+  margin: 0 0 12px 0;
+}
+
+.deleteMessage {
+  font-size: 15px;
+  color: #99c8ce;
+  margin: 0 0 28px 0;
+  line-height: 1.5;
+}
+
+.deleteActions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.deleteCancel {
+  flex: 1;
+  background: rgba(188, 219, 223, 0.3);
+  color: #235784;
+  border: 1px solid rgba(188, 219, 223, 0.5);
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.deleteCancel:hover {
+  background: rgba(188, 219, 223, 0.5);
+  border-color: rgba(188, 219, 223, 0.7);
+}
+
+.deleteConfirm {
+  flex: 1;
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+}
+
+.deleteConfirm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(220, 38, 38, 0.4);
+}
+
+.deleteConfirm:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+}
+
 /* Smooth scrolling for modal */
 .modalContent {
   scrollbar-width: thin;
@@ -293,4 +395,29 @@
 
 .modalContent::-webkit-scrollbar-thumb:hover {
   background: #99c8ce;
+}
+
+/* Responsive for delete modal */
+@media (max-width: 480px) {
+  .deleteContent {
+    padding: 24px;
+    max-width: 360px;
+  }
+
+  .deleteTitle {
+    font-size: 20px;
+  }
+
+  .deleteMessage {
+    font-size: 14px;
+  }
+
+  .deleteActions {
+    flex-direction: column-reverse;
+  }
+
+  .deleteCancel,
+  .deleteConfirm {
+    width: 100%;
+  }
 }
