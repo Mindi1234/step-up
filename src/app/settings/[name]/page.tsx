@@ -38,6 +38,8 @@ export default function CategoryPage() {
         (h) => String(h.categoryId) === String(category._id)
     );
 
+    console.log("🔥 habitsInCategory:", habitsInCategory);
+
     const handleEdit = (habit: IHabit) => {
         setEditingHabit(habit);
     };
@@ -45,7 +47,7 @@ export default function CategoryPage() {
     const handleUpdateHabit = async (data: any) => {
         if (!editingHabit?._id) return;
 
-        await updateHabit(editingHabit.id, {
+        await updateHabit(editingHabit._id.toString(), {
             name: data.name,
             description: data.description,
             categoryId: data.categoryId,
@@ -59,12 +61,14 @@ export default function CategoryPage() {
     };
 
     const handleDelete = async (habitId: string) => {
+        console.log("🛑 DELETE CLICKED WITH ID:", habitId); // <--- כאן
+
         if (confirm("Are you sure you want to delete this habit?")) {
             await deleteHabit(habitId);
-            // Refresh the list after deletion
             await fetchHabits();
         }
     };
+
 
     return (
         <div style={{ padding: "16px" }}>
@@ -78,11 +82,11 @@ export default function CategoryPage() {
 
             <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 {habitsInCategory.map((habit) => (
-                    <HabitItem 
-                        key={habit.id} 
+                    <HabitItem
+                        key={String(habit!._id)}
                         habit={habit}
                         onEdit={() => handleEdit(habit)}
-                        onDelete={() => handleDelete(habit.id)}
+                        onDelete={() => handleDelete(String(habit._id))}
                     />
                 ))}
             </div>

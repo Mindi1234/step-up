@@ -55,7 +55,7 @@ export default function HabitItem({ habit, onEdit, onDelete }: Props) {
                             <Edit size={16} />
                             Edit
                         </button>
-                        <button onClick={onDelete}>
+                        <button onClick={()=>onDelete?.()}>
                             <Trash2 size={16} />
                             Delete
                         </button>
