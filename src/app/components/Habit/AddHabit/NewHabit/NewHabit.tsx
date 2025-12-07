@@ -9,7 +9,7 @@ import HabitForm from "@/app/components/Habit/AddHabit/HabitForm/HabitForm";
 export default function NewHabit() {
   const isHabitModalOpen = useModalStore((state) => state.isHabitModalOpen);
   const closeHabitModal = useModalStore((state) => state.closeHabitModal);
-  const addHabit = useHabitAppStore((s) => s.addHabit);  // ← משתמשים בסטור המאוחד
+  const addHabit = useHabitAppStore((s) => s.addHabit);  
   const { categories, fetchCategories } = useCategoriesStore();
   const user = useUserStore((state) => state.user);
 
@@ -28,8 +28,6 @@ export default function NewHabit() {
       reminderTime: data.reminderTime,
       days: data.days,
     });
-
-    // ❌ לא צריך fetchTodayHabits כאן — הסטור עושה זאת!
     closeHabitModal();
   };
 

@@ -8,8 +8,6 @@ export default function useHabitsForDay(userId: string, date: Date) {
 
   useEffect(() => {
     if (!userId || !date) return;
-
-    // טוען הרגלים פעם אחת או אם userId השתנה
     fetchHabits();
   }, [userId]);
 

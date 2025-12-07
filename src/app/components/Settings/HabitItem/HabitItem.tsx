@@ -29,7 +29,7 @@ export default function HabitItem({
 
     const handleTitleClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        onCloseMenu(); // Close menu when clicking title
+        onCloseMenu(); 
         if (onEdit) {
             onEdit();
         }
@@ -40,7 +40,7 @@ export default function HabitItem({
         if (target.closest(`.${styles.menuWrapper}`) || target.closest(`.${styles.title}`)) {
             return;
         }
-        onCloseMenu(); // Close menu when clicking card
+        onCloseMenu(); 
         if (onEdit) {
             onEdit();
         }
@@ -52,7 +52,7 @@ export default function HabitItem({
     };
 
     const handleMenuAction = (action: () => void) => {
-        onCloseMenu(); // Close menu after action
+        onCloseMenu(); 
         action();
     };
 

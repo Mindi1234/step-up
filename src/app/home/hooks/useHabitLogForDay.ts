@@ -12,15 +12,13 @@ export default function useHabitLogForDay(userId: string, date: Date) {
     const iso = date.toISOString(); 
     fetchLogs(userId, iso);
 
-  }, [userId, date]); // fetchLogs לא צריך להיות בתלות!
+  }, [userId, date]); 
 
-  // Filter logs for this specific date
   const dayLogs = useMemo(() => {
     if (!date) return [];
     const iso = date.toISOString();
 
     return logs.filter((log) => {
-      // השוואה גמישה יותר: רק YYYY-MM-DD
       return log.date?.slice(0, 10) === iso.slice(0, 10);
     });
   }, [logs, date]);

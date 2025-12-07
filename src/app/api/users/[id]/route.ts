@@ -4,9 +4,6 @@ import User from "@/models/User";
 import mongoose from "mongoose";
 import { authenticate } from "@/lib/server/authMiddleware";
 
-// =======================
-// GET /api/users/[id]
-// =======================
 export async function GET(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
@@ -55,11 +52,6 @@ export async function GET(
   }
 }
 
-
-
-// =======================
-// PUT /api/users/[id]
-// =======================
 export async function PUT(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }

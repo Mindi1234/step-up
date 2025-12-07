@@ -1,7 +1,7 @@
 import { IHabit } from "@/interfaces/IHabit";
 import { ArrowLeft } from "lucide-react";
 import HabitItem from "@/app/components/Settings/HabitItem/HabitItem";
-import { ICategory } from "@/interfaces/ICategory"; // נניח שיש קטגוריה כזו
+import { ICategory } from "@/interfaces/ICategory"; 
 
 interface HabitsListDisplayProps {
     category: ICategory;
@@ -29,7 +29,6 @@ export default function HabitsListDisplay({
             <button
                 onClick={onGoBack}
                 style={{
-                    // ... עיצוב כפתור חזור
                     background: 'none',
                     border: 'none',
                     cursor: 'pointer',

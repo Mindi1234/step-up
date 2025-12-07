@@ -3,9 +3,9 @@ import { HabitAppSlice, HabitsSlice } from "./types";
 
 import {
   getUserHabits,
-  addHabit as apiAddHabit,
-  updateHabit as apiUpdateHabit,
-  deleteHabit as apiDeleteHabit,
+  addHabit ,
+  updateHabit ,
+  deleteHabit ,
 } from "@/services/client/habitsService";
 
 export const createHabitsSlice: StateCreator<
@@ -28,7 +28,7 @@ export const createHabitsSlice: StateCreator<
   },
 
   addHabit: async (habitData) => {
-    const created = await apiAddHabit(habitData);
+    const created = await addHabit(habitData);
 
     set({
       habits: [...get().habits, created],
@@ -39,7 +39,7 @@ export const createHabitsSlice: StateCreator<
   },
 
   updateHabit: async (id, updatedData) => {
-    const updated = await apiUpdateHabit(id, updatedData);
+    const updated = await updateHabit(id, updatedData);
 
     set({
       habits: get().habits.map((h) =>
@@ -52,7 +52,7 @@ export const createHabitsSlice: StateCreator<
   },
 
   deleteHabit: async (id) => {
-    await apiDeleteHabit(id);
+    await deleteHabit(id);
 
     set({
       habits: get().habits.filter((h) => h._id !== id),

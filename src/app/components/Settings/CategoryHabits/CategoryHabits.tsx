@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { toUrlName } from "@/app/components/Settings/CategoryItem/CategoryItem";
 import { useCategoriesStore } from "@/app/store/useCategoriesStore";
-import { useHabitAppStore } from "@/app/store/habitAppStore/store"; // ← הסטור המאוחד!
+import { useHabitAppStore } from "@/app/store/habitAppStore/store"; 
 import { useRouter } from "next/navigation";
 import Loader from "@/app/components/Loader/Loader";
 import { IHabit } from "@/interfaces/IHabit";
@@ -48,17 +48,17 @@ export default function CategoryHabits({ routeName }: CategoryHabitsProps) {
         (h) => String(h.categoryId) === String(category._id)
     );
 
-    // 🟦 פתיחת טופס עריכה
     const handleEdit = (habit: IHabit) => {
+        console.log("editingHabit:", habit);
         setEditingHabit(habit);
         setOpenMenuId(null);
-    };
+    }
 
-    // 🟦 עדכון הרגל
+
     const handleUpdateHabit = async (data: any) => {
         if (!editingHabit?._id) return;
 
-        await updateHabit(editingHabit.id, {
+        await updateHabit(String(editingHabit._id), {
             name: data.name,
             description: data.description,
             categoryId: data.categoryId,
@@ -66,15 +66,12 @@ export default function CategoryHabits({ routeName }: CategoryHabitsProps) {
             days: data.days,
         });
 
-        // ❌ לא צריך fetchHabits (סטור מאוחד עושה את זה)
         setEditingHabit(null);
     };
 
-    // 🟦 מחיקת הרגל
     const handleDelete = async (habitId: string) => {
         if (confirm("Are you sure you want to delete this habit?")) {
             await deleteHabit(habitId);
-            // ❌ לא צריך fetchHabits יותר
         }
     };
 

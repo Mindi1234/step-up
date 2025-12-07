@@ -29,7 +29,6 @@ export const useHabitStore = create<HabitStore>((set, get) => ({
   fetchHabits: async () => {
     const { lastFetched, habits } = get();
 
-    // 🟦 מניעת Fetch כפול
     if (lastFetched && habits.length > 0) return;
 
     set({ loading: true, error: null });
@@ -71,8 +70,6 @@ export const useHabitStore = create<HabitStore>((set, get) => ({
         habits: [...get().habits, created],
         error: null,
       });
-
-      // 🟦 הרגל חדש → נקה future logs
       useHabitLogStore.getState().clearLogs();
 
     } catch (err: any) {
@@ -91,7 +88,6 @@ export const useHabitStore = create<HabitStore>((set, get) => ({
         error: null,
       }));
 
-      // 🟦 עדכון בהרגל → מחיקה/עדכון future logs
       useHabitLogStore.getState().clearLogs();
 
     } catch (err: any) {

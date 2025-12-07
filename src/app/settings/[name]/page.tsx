@@ -1,4 +1,3 @@
-// app/settings/[categoryName]/page.tsx
 "use client";
 
 import { usePathname } from "next/navigation";

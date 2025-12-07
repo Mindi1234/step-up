@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useHabitAppStore } from "@/app/store/habitAppStore/store"; // ← סטור מאוחד
+import { useHabitAppStore } from "@/app/store/habitAppStore/store"; 
 import { useUserStore } from "@/app/store/useUserStore";
 import { getCategoryStyle } from "@/utils/todayHabitsHelper";
 import { ITodayHabit } from "@/interfaces/ITodayHabit";
@@ -14,7 +14,7 @@ export default function TodayHabits({ selectedDate }: { selectedDate: Date }) {
   const fetchTodayHabits = useHabitAppStore((s) => s.fetchTodayHabits);
   const toggleTodayStatus = useHabitAppStore((s) => s.toggleTodayStatus);
 
-  const fetchLogs = useHabitAppStore((s) => s.fetchLogs); // ← לוגים מהסטור המאוחד
+  const fetchLogs = useHabitAppStore((s) => s.fetchLogs); 
   const user = useUserStore((s) => s.user);
 
   const isToday = (() => {
@@ -26,7 +26,6 @@ export default function TodayHabits({ selectedDate }: { selectedDate: Date }) {
     );
   })();
 
-  // 🟦 טעינת ההרגלים ליום הנבחר
   useEffect(() => {
     const dateStr = selectedDate.toISOString().split("T")[0];
     fetchTodayHabits(dateStr);
