@@ -29,16 +29,8 @@ export default function CategoryHabits({ routeName }: CategoryHabitsProps) {
         fetchHabits();
     }, [fetchCategories, fetchHabits]);
 
-    // Loading State
     if (catLoading || habitsLoading) {
-        return (
-            <div className={styles.wrapper}>
-                <div className={styles.loadingContainer}>
-                    <div className={styles.loadingSpinner}></div>
-                    <p className={styles.loadingText}>Loading habits...</p>
-                </div>
-            </div>
-        );
+        return <Loader />;
     }
 
     const category = categories.find(
@@ -55,7 +47,7 @@ export default function CategoryHabits({ routeName }: CategoryHabitsProps) {
                     <p className={styles.errorMessage}>
                         The category you're looking for doesn't exist.
                     </p>
-                    <button 
+                    <button
                         className={styles.errorButton}
                         onClick={() => router.push('/settings')}
                     >
@@ -77,7 +69,7 @@ export default function CategoryHabits({ routeName }: CategoryHabitsProps) {
 
     const handleUpdateHabit = async (data: any) => {
         if (!editingHabit?._id) return;
-        
+
         await updateHabit(editingHabit._id.toString(), {
             name: data.name,
             description: data.description,
@@ -85,7 +77,7 @@ export default function CategoryHabits({ routeName }: CategoryHabitsProps) {
             reminderTime: data.reminderTime,
             days: data.days,
         });
-        
+
         await fetchHabits();
         setEditingHabit(null);
     };
@@ -125,14 +117,14 @@ export default function CategoryHabits({ routeName }: CategoryHabitsProps) {
                         <div className={styles.modalContent}>
                             <div className={styles.modalHeader}>
                                 <h2 className={styles.modalTitle}>Edit Habit</h2>
-                                <button 
+                                <button
                                     className={styles.modalClose}
                                     onClick={() => setEditingHabit(null)}
                                 >
                                     <X size={24} />
                                 </button>
                             </div>
-                            
+
                             <HabitForm
                                 categories={categories}
                                 onSubmit={handleUpdateHabit}
