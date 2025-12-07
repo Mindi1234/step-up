@@ -76,7 +76,6 @@ export async function deleteHabitWithFutureLogs(
 
     const deleteResult = await Habit.deleteOne({ _id: habitId });
 
-    // Delete future logs
     const today = startOfDayUTC(new Date());
 
     const logsDeleteResult = await HabitLog.deleteMany({

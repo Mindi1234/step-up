@@ -6,9 +6,6 @@ import mongoose from "mongoose";
 import { authenticate } from "@/lib/server/authMiddleware";
 import { deleteHabitWithFutureLogs, updateHabitWithFutureLogs } from "@/services/server/habitService";
 
-// =======================
-// GET /api/habits/[id]
-// =======================
 export async function GET(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
@@ -42,11 +39,6 @@ export async function GET(
   }
 }
 
-
-
-// =======================
-// PUT /api/habits/[id]
-// =======================
 export async function PUT(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
@@ -82,11 +74,6 @@ export async function PUT(
   }
 }
 
-
-
-// =======================
-// DELETE /api/habits/[id]
-// =======================
 export async function DELETE(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
@@ -108,7 +95,6 @@ export async function DELETE(
 
     const deletedResult = await deleteHabitWithFutureLogs(id, userId.toString());
 
-    // verify deletion
     const habitStillExists = await Habit.findOne({ _id: id, userId });
     if (habitStillExists) {
       console.error("Habit deletion failed - habit still exists");
