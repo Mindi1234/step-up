@@ -3,6 +3,7 @@ import { dbConnect } from "@/lib/DB";
 import Post from "@/models/Post";
 import { authenticate } from "@/lib/server/authMiddleware";
 import { Types } from "mongoose";
+import { pusher } from "@/lib/pusher-client"
 
 interface Params {
   id: string;
@@ -11,14 +12,15 @@ interface Params {
 export async function POST(
   req: Request,
   context: { params: Params | Promise<Params> }
-  ) {
-    try {
-        await dbConnect();
-    
-    const userId = await authenticate(req);
+) {
+  try {
+    await dbConnect();
+
+    const user = await authenticate(req);
+    const userId = user._id;
     if (!userId) {
-        return NextResponse.json({ message: "Unauthorized" },
-         { status: 401 });
+      return NextResponse.json({ message: "Unauthorized" },
+        { status: 401 });
     }
 
     const params = await context.params as Params;
@@ -31,18 +33,18 @@ export async function POST(
 
     if (post.userId.toString() === userId.toString()) {
       return NextResponse.json(
-          { message: "Cannot like your own post" }, { status: 400 });
+        { message: "Cannot like your own post" }, { status: 400 });
     }
 
     post.likedBy = post.likedBy || [];
-  
+
     const alreadyLiked = post.likedBy.some(
       (id: Types.ObjectId) => id.toString() === userId._id.toString()
     );
 
     console.log("Already liked:", alreadyLiked);
-    
-      
+
+
     if (alreadyLiked) {
       post.likedBy = post.likedBy.filter(
         (id: Types.ObjectId) => id.toString() !== userId._id.toString()
@@ -55,9 +57,20 @@ export async function POST(
     post.likesCount = post.likedBy.length;
     await post.save();
 
+    await pusher.trigger(
+      `private-user-${userId}`,
+      "like-toggled",
+      {
+        postId: postId,
+        likesCount: post.likesCount,
+        changedByUserId: userId._id,
+        action: alreadyLiked ? 'unliked' : 'liked',
+      }
+    );
+
     return NextResponse.json({
       likesCount: post.likesCount,
-      liked: !alreadyLiked, 
+      liked: !alreadyLiked,
     });
   } catch (err: any) {
     console.error("Error toggling like:", err);
