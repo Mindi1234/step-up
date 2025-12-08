@@ -1,3 +1,5 @@
+"use client"
+
 import { usePostStore } from "@/app/store/usePostStore";
 import { useUserStore } from "@/app/store/useUserStore";
 import { useEffect } from "react";
