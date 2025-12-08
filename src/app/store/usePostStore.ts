@@ -2,24 +2,21 @@
 
 import { create } from "zustand";
 import { IPost } from "@/interfaces/IPost";
-import {pusherClient } from "@/lib/pusher-frontend";
 import Pusher from "pusher-js";
-
-type PusherClinet = Pusher;
+import { getPusherClient } from "@/lib/pusher-frontend";
+import { useUserStore } from "./useUserStore";
 interface PostState {
   posts: IPost[];
-  pusherClient: PusherClinet | null;
   setPosts: (posts: IPost[]) => void;
   clearPosts: () => void;
   updatePost: (id: string, updated: Partial<IPost>) => void;
   removePost: (id: string) => void;
   updatePostLikes: (postId: string, newLikesCount: number) => void;
-  initPostChannel: (userId: string) => void;
+  initializePusherChannel: (userId: string, pusher: Pusher) => () => void;
 }
 
-export const usePostStore = create<PostState>((set,get) => ({
+export const usePostStore = create<PostState>((set, get) => ({
   posts: [],
-  pusherClient: null,
   setPosts: (posts) => set({ posts }),
   clearPosts: () => set({ posts: [] }),
 
@@ -42,28 +39,18 @@ export const usePostStore = create<PostState>((set,get) => ({
       ),
     })),
 
-  initPostChannel: (userId) => {
-    const state = get();
-    if (state.pusherClient && (state.pusherClient as any).connection.state === 'connected') {
-      console.log("Pusher already initialized and connected.");
-      return;
-    }
+  initializePusherChannel: (userId: string, pusher: Pusher) => {
+    const channelName = `private-user-${userId}`;
+    const channel = pusher.subscribe(channelName);
 
-    
-    // 1. צור או אחזר את הערוץ
-    const channel = pusherClient.subscribe(`private-user-${userId}`);
-
-    // 2. קבע את ה-Listener לאירוע
     channel.bind("like-toggled", (data: any) => {
-      console.log(`Received like-toggled event for post ${data.postId}:`, data);
-      // הפעל את פונקציית העדכון של ה-Store
-      usePostStore.getState().updatePostLikes(data.postId, data.likesCount);
+      get().updatePostLikes(data.postId, data.likesCount);
     });
 
-    // אופציונלי: פונקציה לבטל הרשמה (Unsubscribe) כאשר הקומפוננטה נעלמת
+    // מחזיר פונקציה שמנתקת את המנוי
     return () => {
       channel.unbind("like-toggled");
-      pusherClient.unsubscribe(`private-user-${userId}`);
+      pusher.unsubscribe(channelName);
     };
   },
 }));

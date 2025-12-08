@@ -1,4 +1,3 @@
-import { useUserStore } from '@/app/store/useUserStore';
 import Pusher from 'pusher-js';
 
 const PUSHER_KEY = process.env.NEXT_PUBLIC_PUSHER_KEY;
@@ -9,7 +8,7 @@ if (!PUSHER_KEY || !PUSHER_CLUSTER) {
 }
 
 let pusherInstance: any = null;
-export const getPusherClient = () => {
+export const getPusherClient = (userId?:string) => {
     // 1. אם המופע כבר קיים (Singleton), החזר אותו מיד
     if (pusherInstance) {
         return pusherInstance;
@@ -21,21 +20,17 @@ export const getPusherClient = () => {
         console.error("Pusher key is missing. Cannot initialize client.");
         return undefined;
     }
-    const userId = useUserStore((s) => s.user?.id);
     // 3. יצירת המופע בפעם הראשונה ושמירתו
     pusherInstance = new Pusher(PUSHER_KEY, {
         cluster: PUSHER_CLUSTER!,
         authEndpoint: "/api/pusher/auth",
         auth: {
-            params: {
-                userId: userId
-            }
+            params:{userId}
         }
     });
 
     return pusherInstance;
 };
 
-export const pusherClient = getPusherClient();
 
 
