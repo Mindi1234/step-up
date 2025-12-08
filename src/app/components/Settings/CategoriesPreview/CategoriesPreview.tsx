@@ -13,12 +13,10 @@ export default function CategoriesPreview() {
         fetchCategories();
     }, [fetchCategories]);
 
-    // Loading State
     if (loading) {
         return <Loader />;
     }
 
-    // Empty State
     if (!categories.length) {
         return (
             <div className={styles.container}>
@@ -36,7 +34,6 @@ export default function CategoriesPreview() {
         );
     }
 
-    // Categories Grid
     return (
         <div className={styles.container}>
             {/* Optional: Header Section */}

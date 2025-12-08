@@ -32,7 +32,6 @@ export default function HabitsListDisplay({
                 Back
             </button>
 
-            {/* Header Section */}
             <div className={styles.header}>
                 <h1 className={styles.title}>{category.name}</h1>
                 <p className={styles.subtitle}>
