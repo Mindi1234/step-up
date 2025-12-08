@@ -1,13 +1,14 @@
 "use client";
 
-import { useEffect, useState, useRef  } from "react";
-import { getPostsPaginated  } from "@/services/client/postService";
+import { useEffect, useState, useRef } from "react";
+import { getPostsPaginated } from "@/services/client/postService";
 import PostItem from "../PostItem/PostItem";
-import Loader from "../../Loader/Loader"; 
+import Loader from "../../Loader/Loader";
 import styles from "./PostList.module.css";
+import { usePostStore } from "@/app/store/usePostStore";
 
 interface PostListProps {
-  refreshTrigger?: number; 
+  refreshTrigger?: number;
 }
 
 
@@ -19,8 +20,9 @@ export default function PostList({ refreshTrigger }: PostListProps) {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const bottomRef = useRef<HTMLDivElement | null>(null);
+  const updatePostLikes = usePostStore((s) => s.updatePostLikes);
 
-   
+
   useEffect(() => {
     setPosts([]);
     setSkip(0);
@@ -32,7 +34,7 @@ export default function PostList({ refreshTrigger }: PostListProps) {
     if (!hasMore || loading) return;
     setLoading(true);
     try {
-      const data  = await getPostsPaginated(skip, LIMIT);
+      const data = await getPostsPaginated(skip, LIMIT);
 
       setPosts((prev) => {
         const merged = [...prev, ...data.posts];
@@ -52,10 +54,10 @@ export default function PostList({ refreshTrigger }: PostListProps) {
     }
   };
 
- 
+
 
   useEffect(() => {
-    if(!bottomRef.current) return;
+    if (!bottomRef.current) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -67,9 +69,9 @@ export default function PostList({ refreshTrigger }: PostListProps) {
     );
     observer.observe(bottomRef.current);
     return () => observer.disconnect();
-  }, [hasMore, loading, posts]);
+  }, [hasMore, loading, posts, updatePostLikes]);
 
-  
+
   return (
     <div className={styles.postList}>
       {posts.map((post) => (
