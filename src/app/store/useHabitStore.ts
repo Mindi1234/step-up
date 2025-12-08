@@ -70,7 +70,6 @@ export const useHabitStore = create<HabitStore>((set, get) => ({
         habits: [...get().habits, created],
         error: null,
       });
-      
       useHabitLogStore.getState().clearLogs();
 
     } catch (err: any) {
