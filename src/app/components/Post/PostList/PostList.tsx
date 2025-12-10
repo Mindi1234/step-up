@@ -26,6 +26,7 @@ export default function PostList({ }: PostListProps) {
   const [skip, setSkip] = useState(0);
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement | null>(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
 
 
@@ -79,6 +80,22 @@ export default function PostList({ }: PostListProps) {
     return () => observer.disconnect();
   }, [hasMore, loading]);
 
+  useEffect(() => {
+    const handler = () => {
+      if (window.scrollY > 300) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    window.addEventListener("scroll", handler);
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  const scrollToTop = () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
 
   return (
     <div className={styles.postList}>
@@ -87,6 +104,11 @@ export default function PostList({ }: PostListProps) {
       ))}
       <div ref={bottomRef} style={{ height: "30px" }}></div>
       {loading && <Loader />}
+      {showScrollTop && (
+        <button className={styles.scrollTopBtn} onClick={scrollToTop}>
+          ↑
+        </button>
+      )}
     </div>
   );
 }
