@@ -24,14 +24,14 @@ export default function PostList({ }: PostListProps) {
   const hasMore = usePostStore((s) => s.hasMore);
   const setHasMore = usePostStore((s) => s.setHasMore);
 
-  const [skip, setSkip] = useState(0);
+  // const [skip, setSkip] = useState(0);
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
 
 
   useEffect(() => {
-    setSkip(0);
+    // setSkip(0);
     setHasMore(true);
     loadMorePosts();
   }, [setHasMore]);
@@ -41,12 +41,19 @@ export default function PostList({ }: PostListProps) {
 
     setLoading(true);
     try {
-      const data = await getPostsPaginated(skip, LIMIT);
-      console.log("data post ", data.posts);
-      console.log("data.posts ", data.posts.length);
+      const data = await getPostsPaginated(0, LIMIT);
+      const before = posts.length;
+
       const merged = [...posts, ...data.posts];
       const unique = Array.from(new Map(merged.map((p) => [p._id, p])).values());
-      console.log("unique", unique.length);
+
+      const after = unique.length;
+      const added = after - before;
+
+      if (added === 0) {
+        setHasMore(false);
+        return;
+      }
 
       setPosts(unique);
 
@@ -56,8 +63,12 @@ export default function PostList({ }: PostListProps) {
         initializePostChannel(String(post._id), pusher);
       });
 
-      setSkip(prev => prev + data.posts.length);
-      setHasMore(data.hasMore);
+      // setSkip(prev => prev + data.posts.length);
+      // setHasMore(data.hasMore);
+      // if (data.posts.length === 0) {
+      //   setHasMore(false);
+      //   return;
+      // }
 
     } catch (error) {
       console.error("Failed to load posts:", error);
