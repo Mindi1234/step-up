@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { uploadImageToCloudinary } from "@/services/server/cloudinaryService";
 import { useUserStore } from "@/app/store/useUserStore";
-import { useModalPostStore } from "@/app/store/usePostModelStore"
+import { useModalPostStore } from "@/app/store/usePostModelStore";
 import { addPost } from "@/services/client/postService";
 import PostMedia from "../PostMedia/PostMedia";
 import styles from "./AddPost.module.css";
@@ -19,27 +19,66 @@ export default function AddPost({ onClose }: AddPostProps) {
   const closePostModal = useModalPostStore((state) => state.closePostModal);
   const user = useUserStore((state) => state.user);
 
+  // ----- STATE -----
   const [content, setContent] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [aiSuggestion, setAiSuggestion] = useState<string | null>(null);
-  const setHasMore = usePostStore((s) => s.setHasMore);
 
+  const [aiSuggestion, setAiSuggestion] = useState<string | null>(null); // FILTER suggestion
+  const [generatedPost, setGeneratedPost] = useState<string | null>(null); // GENERATE Post AI
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const setHasMore = usePostStore((s) => s.setHasMore);
 
   if (!isPostModalOpen) return null;
 
+  // ----- FILE HANDLING -----
   const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) setFiles(Array.from(e.target.files));
   };
 
+  // ----- GENERATE POST -----
+  const handleGeneratePost = async () => {
+    if (!content.trim()) {
+      setError("Write a short idea first so I can build a post ✨");
+      return;
+    }
+
+    setIsGenerating(true);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/agent/posts/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idea: content }),
+      });
+
+      const data = await res.json();
+
+      if (data.post) {
+        setGeneratedPost(data.post);
+      } else {
+        setError("Failed to generate post.");
+      }
+    } catch {
+      setError("Failed to generate post.");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  // ----- SUBMIT POST -----
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user?.id) return;
 
     setError(null);
     setIsLoading(true);
+
     try {
+      // FILTER AI (checks tone + positivity)
       const aiResponse = await fetch("/api/agent/posts/filter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -52,21 +91,25 @@ export default function AddPost({ onClose }: AddPostProps) {
       const aiData = await aiResponse.json();
 
       if (!aiData.allowed) {
-        // setError(aiData.reason || "This post is not suitable for StepUp.");
         setError("This post is not suitable for StepUp.");
         setIsLoading(false);
         return;
       }
+
       if (aiData.rewrite) {
         setAiSuggestion(aiData.rewrite);
         setIsLoading(false);
         return;
       }
+
+      // UPLOAD MEDIA
       const mediaUrls = await Promise.all(
         files.map(async (file) => {
           if (file.size > 20 * 1024 * 1024)
             throw new Error(`File ${file.name} too big.`);
+
           const url = await uploadImageToCloudinary(file);
+
           return {
             url,
             type: file.type.startsWith("video") ? "video" : "image",
@@ -80,9 +123,13 @@ export default function AddPost({ onClose }: AddPostProps) {
         media: mediaUrls,
       });
 
+      // RESET
       setContent("");
-      setHasMore(true);
       setFiles([]);
+      setGeneratedPost(null);
+      setAiSuggestion(null);
+      setHasMore(true);
+
       (onClose || closePostModal)();
     } catch (err) {
       console.error(err);
@@ -92,62 +139,39 @@ export default function AddPost({ onClose }: AddPostProps) {
     }
   };
 
-  // return (
-
-  //   <div className={styles.addPostModal}>
-  //     <form onSubmit={handleSubmit} className={styles.addPostForm}>
-  //       <button
-  //         type="button"
-  //         className={styles.closeButton}
-  //         onClick={onClose || closePostModal}
-  //       >
-  //         ×
-  //       </button>
-
-  //       {error && <p className={styles.errorMessage}>❌ {error}</p>}
-
-  //       <textarea
-  //         placeholder="Add comment..."
-  //         value={content}
-  //         onChange={(e) => setContent(e.target.value)}
-  //         className={styles.contentTextArea}
-  //         disabled={isLoading}
-  //       />
-
-  //       <div className={styles.actionsContainer}>
-  //         <label htmlFor="file-upload" className={styles.fileInputLabel}>
-  //           <span className={styles.fileInputIcon}>🖼️</span>
-  //           Add image/video
-  //         </label>
-  //         <input
-  //           id="file-upload"
-  //           type="file"
-  //           multiple
-  //           accept="image/*,video/*"
-  //           onChange={handleFiles}
-  //           className={styles.fileInput}
-  //           disabled={isLoading}
-  //         />
-  //         <PostMedia files={files} />
-  //       </div>
-
-  //       <button
-  //         type="submit"
-  //         className={styles.submitButton}
-  //         disabled={isLoading || (content.trim() === "" && files.length === 0)}
-  //       >
-  //         {isLoading ? "Uploading..." : "Upload Post"}
-  //       </button>
-  //     </form>
-  //   </div>
-  // );
+  // ----- UI -----
   return (
     <div className={styles.addPostModal}>
 
-      {/* --- כאן ממקמים את ה-AI suggestion --- */}
+      {/* ----- GENERATED POST SUGGESTION ----- */}
+      {generatedPost && (
+        <div className={styles.aiSuggestionBox}>
+          <h4>✨ Suggested post from AI:</h4>
+          <p>{generatedPost}</p>
+
+          <button
+            className={styles.useSuggestionButton}
+            onClick={() => {
+              setContent(generatedPost);
+              setGeneratedPost(null);
+            }}
+          >
+            Use this post
+          </button>
+
+          <button
+            className={styles.rejectSuggestionButton}
+            onClick={() => setGeneratedPost(null)}
+          >
+            Cancel
+          </button>
+        </div>
+      )}
+
+      {/* ----- FILTER AI SUGGESTION (Rewrite) ----- */}
       {aiSuggestion && (
         <div className={styles.aiSuggestionBox}>
-          <h4>✨ Improved wording that the AI ​​offers:</h4>
+          <h4>✨ Improved wording the AI suggests:</h4>
           <p>{aiSuggestion}</p>
 
           <button
@@ -164,11 +188,12 @@ export default function AddPost({ onClose }: AddPostProps) {
             className={styles.rejectSuggestionButton}
             onClick={() => setAiSuggestion(null)}
           >
-            Leave with the original wording.
+            Keep my original text
           </button>
         </div>
       )}
 
+      {/* ----- FORM ----- */}
       <form onSubmit={handleSubmit} className={styles.addPostForm}>
         <button
           type="button"
@@ -188,6 +213,17 @@ export default function AddPost({ onClose }: AddPostProps) {
           disabled={isLoading}
         />
 
+        {/* ---- GENERATE BUTTON ---- */}
+        <button
+          type="button"
+          className={styles.generateButton}
+          onClick={handleGeneratePost}
+          disabled={isGenerating || !content.trim()}
+        >
+          {isGenerating ? "Generating..." : "✨ Generate Post"}
+        </button>
+
+        {/* ---- MEDIA INPUT ---- */}
         <div className={styles.actionsContainer}>
           <label htmlFor="file-upload" className={styles.fileInputLabel}>
             <span className={styles.fileInputIcon}>🖼️</span>
@@ -215,5 +251,4 @@ export default function AddPost({ onClose }: AddPostProps) {
       </form>
     </div>
   );
-
 }

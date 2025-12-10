@@ -164,3 +164,14 @@
   padding: 0.6rem 1rem;
   border-radius: 8px;
 }
+
+.generateButton {
+  margin: 8px 0;
+  background: #3dd2cc;
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}

@@ -2,7 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import { NextResponse } from "next/server";
 
 const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY || "",
+    apiKey: process.env.GEMINI_FILTER_API_KEY || "",
 });
 
 function extractJSON(raw: string): string | null {
@@ -48,7 +48,7 @@ Media attached: ${hasMedia ? "YES" : "NO"}
 `;
 
         const response = await ai.models.generateContent({
-            model:"gemini-2.5-flash",
+            model: "gemini-2.5-flash",
             contents: [{ text: prompt }],
         });
 
@@ -80,7 +80,7 @@ Media attached: ${hasMedia ? "YES" : "NO"}
                 reason: null,
                 rewrite: null,
             },
-            {status:200}
+            { status: 200 }
         );
     }
 }
