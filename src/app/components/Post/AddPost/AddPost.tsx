@@ -23,6 +23,7 @@ export default function AddPost({ onClose }: AddPostProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [aiSuggestion, setAiSuggestion] = useState<string | null>(null);
   const setHasMore = usePostStore((s) => s.setHasMore);
 
 
@@ -39,6 +40,28 @@ export default function AddPost({ onClose }: AddPostProps) {
     setError(null);
     setIsLoading(true);
     try {
+      const aiResponse = await fetch("/api/agent/posts/filter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content,
+          hasMedia: files.length > 0,
+        }),
+      });
+
+      const aiData = await aiResponse.json();
+
+      if (!aiData.allowed) {
+        // setError(aiData.reason || "This post is not suitable for StepUp.");
+        setError("This post is not suitable for StepUp.");
+        setIsLoading(false);
+        return;
+      }
+      if (aiData.rewrite) {
+        setAiSuggestion(aiData.rewrite);
+        setIsLoading(false);
+        return;
+      }
       const mediaUrls = await Promise.all(
         files.map(async (file) => {
           if (file.size > 20 * 1024 * 1024)
@@ -53,7 +76,7 @@ export default function AddPost({ onClose }: AddPostProps) {
 
       await addPost({
         userId: user.id,
-        content,
+        content: aiData.rewrite || content,
         media: mediaUrls,
       });
 
@@ -61,9 +84,6 @@ export default function AddPost({ onClose }: AddPostProps) {
       setHasMore(true);
       setFiles([]);
       (onClose || closePostModal)();
-      // onSuccess?.(); 
-      // alert("Post added successfully");
-
     } catch (err) {
       console.error(err);
       setError((err as Error).message || "Error adding post");
@@ -72,8 +92,83 @@ export default function AddPost({ onClose }: AddPostProps) {
     }
   };
 
+  // return (
+
+  //   <div className={styles.addPostModal}>
+  //     <form onSubmit={handleSubmit} className={styles.addPostForm}>
+  //       <button
+  //         type="button"
+  //         className={styles.closeButton}
+  //         onClick={onClose || closePostModal}
+  //       >
+  //         ×
+  //       </button>
+
+  //       {error && <p className={styles.errorMessage}>❌ {error}</p>}
+
+  //       <textarea
+  //         placeholder="Add comment..."
+  //         value={content}
+  //         onChange={(e) => setContent(e.target.value)}
+  //         className={styles.contentTextArea}
+  //         disabled={isLoading}
+  //       />
+
+  //       <div className={styles.actionsContainer}>
+  //         <label htmlFor="file-upload" className={styles.fileInputLabel}>
+  //           <span className={styles.fileInputIcon}>🖼️</span>
+  //           Add image/video
+  //         </label>
+  //         <input
+  //           id="file-upload"
+  //           type="file"
+  //           multiple
+  //           accept="image/*,video/*"
+  //           onChange={handleFiles}
+  //           className={styles.fileInput}
+  //           disabled={isLoading}
+  //         />
+  //         <PostMedia files={files} />
+  //       </div>
+
+  //       <button
+  //         type="submit"
+  //         className={styles.submitButton}
+  //         disabled={isLoading || (content.trim() === "" && files.length === 0)}
+  //       >
+  //         {isLoading ? "Uploading..." : "Upload Post"}
+  //       </button>
+  //     </form>
+  //   </div>
+  // );
   return (
     <div className={styles.addPostModal}>
+
+      {/* --- כאן ממקמים את ה-AI suggestion --- */}
+      {aiSuggestion && (
+        <div className={styles.aiSuggestionBox}>
+          <h4>✨ Improved wording that the AI ​​offers:</h4>
+          <p>{aiSuggestion}</p>
+
+          <button
+            className={styles.useSuggestionButton}
+            onClick={() => {
+              setContent(aiSuggestion);
+              setAiSuggestion(null);
+            }}
+          >
+            Use this wording
+          </button>
+
+          <button
+            className={styles.rejectSuggestionButton}
+            onClick={() => setAiSuggestion(null)}
+          >
+            Leave with the original wording.
+          </button>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className={styles.addPostForm}>
         <button
           type="button"
@@ -120,4 +215,5 @@ export default function AddPost({ onClose }: AddPostProps) {
       </form>
     </div>
   );
+
 }
