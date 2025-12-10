@@ -23,17 +23,64 @@ export default function PostItem({ post }: { post: IPost }) {
     if (!isOwnPost) toggleLike(String(post._id));
   };
 
+  // return (
+  //   <div className={styles.postItem}>
+  //     <div className={styles.profile}>
+  //       <img
+  //         src={user.profileImg || "/default-profile.png"}
+  //         alt={user.name}
+  //         className={styles.profileImg}
+  //       />
+  //       <p className={styles.userName}>{user.name}</p>
+  //     </div>
+
+  //     <div className={styles.content}>
+  //       {post.media?.length > 0 && (
+  //         <Slider
+  //           items={post.media.map((item) => ({
+  //             url: item.url,
+  //             type: item.type,
+  //           }))}
+  //         />
+  //       )}
+
+  //       <p className={styles.postText}>{post.content}</p>
+
+  //       <div
+  //         className={styles.likeWrapper}
+  //         onClick={onLike}
+  //         style={{
+  //           cursor: isOwnPost ? "not-allowed" : "pointer",
+  //           opacity: isOwnPost ? 0.5 : 1,
+  //         }}
+  //       >
+  //         <Heart
+  //           fill={liked ? "red" : "transparent"}
+  //           color={liked ? "red" : "black"}
+  //           className={styles.likeIcon}
+  //         />
+  //         <span className={styles.likesCount}>{likes}</span>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
   return (
     <div className={styles.postItem}>
-      <div className={styles.profile}>
+
+      {/* HEADER */}
+      <div className={styles.header}>
         <img
           src={user.profileImg || "/default-profile.png"}
           alt={user.name}
           className={styles.profileImg}
         />
-        <p className={styles.userName}>{user.name}</p>
+
+        <div className={styles.userDetails}>
+          <span className={styles.userName}>{user.name}</span>
+        </div>
       </div>
 
+      {/* CONTENT */}
       <div className={styles.content}>
         {post.media?.length > 0 && (
           <Slider
@@ -45,23 +92,19 @@ export default function PostItem({ post }: { post: IPost }) {
         )}
 
         <p className={styles.postText}>{post.content}</p>
-
-        <div
-          className={styles.likeWrapper}
-          onClick={onLike}
-          style={{
-            cursor: isOwnPost ? "not-allowed" : "pointer",
-            opacity: isOwnPost ? 0.5 : 1,
-          }}
-        >
-          <Heart
-            fill={liked ? "red" : "transparent"}
-            color={liked ? "red" : "black"}
-            className={styles.likeIcon}
-          />
-          <span className={styles.likesCount}>{likes}</span>
-        </div>
       </div>
+
+      {/* FOOTER */}
+      <div className={styles.footer} onClick={onLike}>
+        <Heart
+          fill={liked ? "red" : "transparent"}
+          color={liked ? "red" : "black"}
+          className={styles.likeIcon}
+        />
+        <span className={styles.likesCount}>{likes}</span>
+      </div>
+
     </div>
   );
+
 }
