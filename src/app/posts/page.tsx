@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import PostList from "@/app/components/Post/PostList/PostList";
 import AddPost from "@/app/components/Post/AddPost/AddPost";
 import { useModalPostStore } from "@/app/store/usePostModelStore";
