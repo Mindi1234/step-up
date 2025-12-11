@@ -64,13 +64,6 @@ export default function PostList({ }: PostListProps) {
         initializePostChannel(String(post._id), pusher);
       });
 
-      // setSkip(prev => prev + data.posts.length);
-      // setHasMore(data.hasMore);
-      // if (data.posts.length === 0) {
-      //   setHasMore(false);
-      //   return;
-      // }
-
     } catch (error) {
       console.error("Failed to load posts:", error);
     } finally {
