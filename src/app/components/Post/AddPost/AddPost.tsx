@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { uploadImageToCloudinary } from "@/services/server/cloudinaryService";
 import { useUserStore } from "@/app/store/useUserStore";
 import { useModalPostStore } from "@/app/store/usePostModelStore";
@@ -29,9 +29,19 @@ export default function AddPost({ onClose }: AddPostProps) {
   const [generatedPost, setGeneratedPost] = useState<string | null>(null); 
   const [isGenerating, setIsGenerating] = useState(false);
 
+  const [show, setShow] = useState(false);
   const setHasMore = usePostStore((s) => s.setHasMore);
 
-  if (!isPostModalOpen) return null;
+  useEffect(() => {
+    if (isPostModalOpen) {
+      setShow(true);
+    } else {
+      const timeout = setTimeout(() => setShow(false), 300); // match CSS transition
+      return () => clearTimeout(timeout);
+    }
+  }, [isPostModalOpen]);
+
+  if (!isPostModalOpen && !show) return null;
 
   const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) setFiles(Array.from(e.target.files));
@@ -104,14 +114,12 @@ export default function AddPost({ onClose }: AddPostProps) {
 
       const aiData = await aiResponse.json();
 
-      // BLOCKED
       if (!aiData.allowed) {
         setError("This post is not suitable for StepUp.");
         setIsLoading(false);
         return;
       }
 
-      // NEGATIVE → Suggest rewrite
       if (aiData.rewrite) {
         setAiSuggestion(aiData.rewrite);
         setIsLoading(false);
@@ -155,117 +163,122 @@ export default function AddPost({ onClose }: AddPostProps) {
     }
   };
 
-
   return (
-    <div className={styles.addPostModal}>
-
-      {generatedPost && (
-        <div className={styles.aiSuggestionBox}>
-          <h4>✨ Suggested post from AI:</h4>
-          <p>{generatedPost}</p>
-
+    <div
+      className={`${styles.addPostModal} ${isPostModalOpen ? styles.show : styles.hide}`}
+    >
+      <div
+        className={`${styles.modal} ${
+          isPostModalOpen ? styles.slideIn : styles.slideOut
+        }`}
+      >
+        {generatedPost && (
+          <div className={styles.aiSuggestionBox}>
+            <h4>✨ Suggested post from AI:</h4>
+            <p>{generatedPost}</p>
+  
+            <button
+              className={styles.useSuggestionButton}
+              onClick={() => {
+                setContent(generatedPost);
+                setGeneratedPost(null);
+              }}
+            >
+              Use this post
+            </button>
+  
+            <button
+              className={styles.rejectSuggestionButton}
+              onClick={() => setGeneratedPost(null)}
+            >
+              Cancel
+            </button>
+          </div>
+        )}
+  
+        {aiSuggestion && (
+          <div className={styles.aiSuggestionBox}>
+            <h4>✨ Improved wording the AI suggests:</h4>
+            <p>{aiSuggestion}</p>
+  
+            <button
+              className={styles.useSuggestionButton}
+              onClick={() => {
+                setContent(aiSuggestion);
+                setAiSuggestion(null);
+              }}
+            >
+              Use this wording
+            </button>
+          </div>
+        )}
+  
+        <form onSubmit={handleSubmit} className={styles.addPostForm}>
           <button
-            className={styles.useSuggestionButton}
-            onClick={() => {
-              setContent(generatedPost);
-              setGeneratedPost(null);
-            }}
+            type="button"
+            className={styles.closeButton}
+            onClick={onClose || closePostModal}
           >
-            Use this post
+            ×
           </button>
-
-          <button
-            className={styles.rejectSuggestionButton}
-            onClick={() => setGeneratedPost(null)}
-          >
-            Cancel
-          </button>
-        </div>
-      )}
-
-      {aiSuggestion && (
-        <div className={styles.aiSuggestionBox}>
-          <h4>✨ Improved wording the AI suggests:</h4>
-          <p>{aiSuggestion}</p>
-
-          <button
-            className={styles.useSuggestionButton}
-            onClick={() => {
-              setContent(aiSuggestion);
-              setAiSuggestion(null);
-            }}
-          >
-            Use this wording
-          </button>
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} className={styles.addPostForm}>
-        <button
-          type="button"
-          className={styles.closeButton}
-          onClick={onClose || closePostModal}
-        >
-          ×
-        </button>
-
-        {error && <p className={styles.errorMessage}>❌ {error}</p>}
-
-        <textarea
-          placeholder="Add comment..."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          className={styles.contentTextArea}
-          disabled={isLoading}
-        />
-
-        <button
-          type="button"
-          className={styles.generateButton}
-          onClick={handleGeneratePost}
-          disabled={isGenerating || !content.trim()}
-        >
-          {isGenerating ? "Generating..." : "✨ Generate Post"}
-        </button>
-
-        <div className={styles.actionsContainer}>
-          <label htmlFor="file-upload" className={styles.fileInputLabel}>
-            <span className={styles.fileInputIcon}>🖼️</span>
-            Add image/video
-          </label>
-          <input
-            id="file-upload"
-            type="file"
-            multiple
-            accept="image/*,video/*"
-            onChange={handleFiles}
-            className={styles.fileInput}
+  
+          {error && <p className={styles.errorMessage}>❌ {error}</p>}
+  
+          <textarea
+            placeholder="Add comment..."
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            className={styles.contentTextArea}
             disabled={isLoading}
           />
-          <PostMedia files={files} />
-        </div>
-
-        <button
-          type="submit"
-          className={styles.submitButton}
-          disabled={
-            isLoading ||
-            !!aiSuggestion ||
-            (content.trim() === "" && files.length === 0)
-          }
-        >
-          {isLoading ? "Uploading..." : "Upload Post"}
-        </button>
-        {aiSuggestion && (
-          <p className={styles.disabledMessage}>
-            Your post sounds a bit discouraging, so it can’t be published as-is 😊
-            You’re welcome to use the improved version suggested by the system,
-            or edit your text into something more positive and uplifting.
-          </p>
-        )}
-
-
-      </form>
+  
+          <button
+            type="button"
+            className={styles.generateButton}
+            onClick={handleGeneratePost}
+            disabled={isGenerating || !content.trim()}
+          >
+            {isGenerating ? "Generating..." : "✨ Generate Post"}
+          </button>
+  
+          <div className={styles.actionsContainer}>
+            <label htmlFor="file-upload" className={styles.fileInputLabel}>
+              <span className={styles.fileInputIcon}>🖼️</span>
+              Add image/video
+            </label>
+            <input
+              id="file-upload"
+              type="file"
+              multiple
+              accept="image/*,video/*"
+              onChange={handleFiles}
+              className={styles.fileInput}
+              disabled={isLoading}
+            />
+            <PostMedia files={files} />
+          </div>
+  
+          <button
+            type="submit"
+            className={styles.submitButton}
+            disabled={
+              isLoading ||
+              !!aiSuggestion ||
+              (content.trim() === "" && files.length === 0)
+            }
+          >
+            {isLoading ? "Uploading..." : "Upload Post"}
+          </button>
+          {aiSuggestion && (
+            <p className={styles.disabledMessage}>
+              Your post sounds a bit discouraging, so it can’t be published as-is 😊
+              You’re welcome to use the improved version suggested by the system,
+              or edit your text into something more positive and uplifting.
+            </p>
+          )}
+        </form>
+      </div>
     </div>
   );
+  
 }
