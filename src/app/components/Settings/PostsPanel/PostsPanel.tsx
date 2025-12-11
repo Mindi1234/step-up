@@ -18,7 +18,7 @@ export default function PostsPanel() {
       const data = await getPersonalPosts();
       setPosts(data.posts);
     })();
-  }, [setPosts]);
+  }, [setPosts,posts]);
 
   const handleOpenDeleteModal = (post: any) => {
     setPostToDelete(post);
@@ -56,7 +56,6 @@ export default function PostsPanel() {
         {posts.map((post) => (
           <div key={String(post._id)} className={styles.card}>
             
-            {/* Media preview */}
             {post.media?.length > 0 && (
               <div className={styles.media}>
                 <img src={post.media[0].url} alt="" />
@@ -65,14 +64,7 @@ export default function PostsPanel() {
 
             <p className={styles.content}>{post.content}</p>
 
-            {/* ACTION BUTTONS */}
             <div className={styles.actions}>
-              {/* <button
-                className={styles.editBtn}
-                onClick={() => handleOpenEditModal(post)}
-              >
-                Edit
-              </button> */}
 
               <button
                 className={styles.deleteBtn}
@@ -85,7 +77,6 @@ export default function PostsPanel() {
         ))}
       </div>
 
-      {/* ---------------- Delete Modal ---------------- */}
       {postToDelete && (
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
@@ -122,13 +113,7 @@ export default function PostsPanel() {
         </div>
       )}
 
-      {/* ---------------- Edit Modal ---------------- */}
-      {/* {postToEdit && (
-        <EditPostModal 
-          post={postToEdit} 
-          onClose={() => setPostToEdit(null)} 
-        />
-      )} */}
+ 
     </div>
   );
 }
