@@ -10,7 +10,6 @@ import PostItem from "../PostItem/PostItem";
 import Loader from "../../Loader/Loader";
 import styles from "./PostList.module.css";
 
-
 interface PostListProps {
   refreshTrigger?: number;
 }

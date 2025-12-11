@@ -1,4 +1,3 @@
-// app/api/agent/posts/generate/route.ts
 import { NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 
@@ -23,6 +22,7 @@ You are the AI writer for StepUp, a habit-building motivation app.
 Create a NEW, ORIGINAL inspirational post based on the user's idea.
 Do NOT rewrite or paraphrase the idea.
 Instead, generate a fresh, unique StepUp-style post.
+
 Write the post in a natural human style.
 Do NOT use long dashes (—), double hyphens (--), ellipses (...), or overly formal punctuation.
 Use simple, clean punctuation like a real person writing online.
