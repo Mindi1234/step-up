@@ -32,12 +32,10 @@ export default function HabitsListDisplay({
                 Back
             </button>
 
-            {/* Header Section */}
             <div className={styles.header}>
                 <h1 className={styles.title}>{category.name}</h1>
             </div>
 
-            {/* Habits List */}
             <div className={styles.habitsList}>
                 {habitsInCategory.map((habit) => (
                     <HabitItem
@@ -52,7 +50,6 @@ export default function HabitsListDisplay({
                 ))}
             </div>
 
-            {/* Empty State */}
             {habitsInCategory.length === 0 && (
                 <div className={styles.emptyState}>
                     <div className={styles.emptyIcon}>📋</div>

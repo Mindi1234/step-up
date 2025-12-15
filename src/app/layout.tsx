@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+
 import ProfileSidebarWrapper from "./components/ProfileSidebarWrapper/ProfileSidebarWrapper";
 import BottomNavbar from "./components/BottomNavbar/BottomNavbar";
 import NewHabit from "./components/Habit/AddHabit/NewHabit/NewHabit";
-
-
+import PageTransitionWrapper from "./components/PageTransitionWrapper/PageTransitionWrapper";
+import { Toaster } from "react-hot-toast";
 
 
 
@@ -27,11 +28,8 @@ export const metadata: Metadata = {
   }
 };
 
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }:
+  { children: React.ReactNode }) {
 
 
   return (
@@ -39,13 +37,22 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Toaster
+          toastOptions={{
+            style: {
+              zIndex: 999999,
+            },
+          }}
+        />
         <ProfileSidebarWrapper />
-        {children}
-        <NewHabit/>
+        <PageTransitionWrapper>
+          {children}
+        </PageTransitionWrapper>
+        <NewHabit />
         <footer>
           <BottomNavbar />
         </footer>
-        
+
       </body>
     </html>
   );
