@@ -7,15 +7,15 @@ import { getPostsPaginated } from "@/services/client/postService";
 import { getPusherClient } from "@/lib/pusher-frontend";
 import { IPost } from "@/interfaces/IPost";
 import PostItem from "../PostItem/PostItem";
-import Loader from "../../Loader/Loader";
 import styles from "./PostList.module.css";
+import PostSkeleton from "../../../components/Skeleton/PostSkeleton";
 
 interface PostListProps {
   refreshTrigger?: number;
 }
 
 export default function PostList({ }: PostListProps) {
-  const LIMIT: number = 9;
+  const LIMIT: number = 10;
   const posts = usePostStore((s) => s.posts);
   const setPosts = usePostStore((s) => s.setPosts);
   const initializePostChannel = usePostStore((s) => s.initializePusherChannel);
@@ -68,8 +68,6 @@ export default function PostList({ }: PostListProps) {
     }
   };
 
-
-
   useEffect(() => {
     if (!bottomRef.current) return;
 
@@ -108,7 +106,7 @@ export default function PostList({ }: PostListProps) {
         <PostItem key={String(post._id)} post={post} />
       ))}
       <div ref={bottomRef} style={{ height: "30px" }}></div>
-      {loading && <Loader />}
+      {loading && <PostSkeleton count={3} />}
       {showScrollTop && (
         <button className={styles.scrollTopBtn} onClick={scrollToTop}>
           ↑

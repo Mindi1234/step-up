@@ -1,0 +1,86 @@
+.card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--skeleton);
+  }
+  
+  .userInfo {
+    flex: 1;
+  }
+  
+  .content {
+    margin-top: 14px;
+  }
+  
+  .image {
+    margin-top: 14px;
+    height: 220px;
+    border-radius: 12px;
+    background: var(--skeleton);
+  }
+  
+  .line,
+  .lineMedium,
+  .lineShort,
+  .lineTiny {
+    height: 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    background: var(--skeleton);
+  }
+  
+  .line {
+    width: 100%;
+  }
+  
+  .lineMedium {
+    width: 70%;
+  }
+  
+  .lineShort {
+    width: 40%;
+  }
+  
+  .lineTiny {
+    width: 25%;
+    height: 10px;
+  }
+  
+  :root {
+    --skeleton: linear-gradient(
+      90deg,
+      #eeeeee 25%,
+      #f5f5f5 37%,
+      #eeeeee 63%
+    );
+  }
+  
+  .card * {
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease infinite;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: 100% 0;
+    }
+    100% {
+      background-position: -100% 0;
+    }
+  }
+  
