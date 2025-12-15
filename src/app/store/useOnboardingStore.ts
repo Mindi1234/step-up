@@ -21,7 +21,7 @@ export const useOnboardingStore = create<OnboardingState>()(
       hasCreatedFirstHabit: false,
 
       start: () => set({ isOnboardingActive: true, hasStarted: true }),
-      finish: () => set({ isOnboardingActive: false }),
+      finish: () => set({}),
       setFirstHabitCreated: () => set({ hasCreatedFirstHabit: true }),
     }),
     {
