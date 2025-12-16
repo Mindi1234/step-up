@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import styles from '@/app/components/Settings/CategoryItem/CategoryItem.module.css'
+import styles from '@/app/components/Settings/CategoryItem/CategoryItem.module.css';
+
 interface Props {
     id: string;
     name: string;

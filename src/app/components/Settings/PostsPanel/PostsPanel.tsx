@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { usePostStore } from "@/app/store/usePostStore";
 import { deletePost, getPersonalPosts } from "@/services/client/postService";
 import styles from "./PostsPanel.module.css";
-import EditPostModal from "../EditPostModal/EditPostModal";
 
 export default function PostsPanel() {
   const { posts, setPosts, removePost } = usePostStore();

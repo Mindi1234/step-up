@@ -1,5 +1,6 @@
 import { Star } from "lucide-react";
 import styles from "./Completed.module.css";
+
 export default function CompletedCard({ value }: { value: number }) {
     return (
         <div className={styles.card}>

@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     return createAuthResponse(user, `Welcome ${name}!`);
 
   } catch (error) {
-    console.error("❌ Google signup error:", error);
+    console.error("Google signup error:", error);
     return NextResponse.json(
       { message: "Server error" },
       { status: 500 }

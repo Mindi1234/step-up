@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import styles from "./Loader.module.css";
 import { CIRCUMFERENCE, getStepRotation, getStepThreshold, getStepWidth, getStrokeOffset, isStepFilled } from "@/utils/loaderHelper";
-
+import styles from "./Loader.module.css";
 
 export default function Loader() {
     const [progress, setProgress] = useState(0);

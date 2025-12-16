@@ -57,7 +57,7 @@
 .deleteBtn:hover {
   background: #b91c1c;
 }
-/* Modal Background */
+
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -71,7 +71,6 @@
   z-index: 2000;
 }
 
-/* Modal Box */
 .modal {
   background: #fff;
   padding: 22px;

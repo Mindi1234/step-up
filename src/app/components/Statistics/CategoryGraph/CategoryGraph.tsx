@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { useStatisticsStore } from "@/app/store/useStatisticsStore";
 import RangeSelector from "../RangeSelector/RangeSelector";
-import styles from "./CategoryGraph.module.css";
 import Loader from "../../Loader/Loader";
-import { Activity } from "lucide-react"; 
+import { Activity } from "lucide-react";
+import styles from "./CategoryGraph.module.css";
 
 export default function CategoryGraph() {
     const [range, setRange] = useState<7 | 30 | 365>(7);

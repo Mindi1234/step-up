@@ -1,8 +1,9 @@
 "use client";
 
 import { IHabit } from "@/interfaces/IHabit";
-import styles from "@/app/components/Settings/HabitItem/HabitItem.module.css"
 import { Edit, MoreVertical, Trash2 } from "lucide-react";
+import styles from "@/app/components/Settings/HabitItem/HabitItem.module.css"
+
 interface Props {
     habit: IHabit;
     isMenuOpen: boolean;

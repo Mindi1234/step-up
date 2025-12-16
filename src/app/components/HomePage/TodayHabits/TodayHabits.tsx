@@ -6,9 +6,9 @@ import { useUserStore } from "@/app/store/useUserStore";
 import { useOnboardingStore } from "@/app/store/useOnboardingStore";
 import { getCategoryStyle } from "@/utils/todayHabitsHelper";
 import { ITodayHabit } from "@/interfaces/ITodayHabit";
-import styles from "./TodayHabits.module.css";
 import Loader from "../../Loader/Loader";
 import NoHabitsEmpty from "../NoTodayHabits/NoTodayHabits";
+import styles from "./TodayHabits.module.css";
 
 export default function TodayHabits({ selectedDate }: { selectedDate: Date }) {
   const todayHabits = useHabitAppStore((s) => s.todayHabits);
@@ -121,7 +121,6 @@ export default function TodayHabits({ selectedDate }: { selectedDate: Date }) {
             `}
             style={getCategoryStyle(habit)}
             onClick={async () => {
-              // ⭐ בזמן הדרכה — לא לשנות מצב אמיתי
               if (isOnboardingActive) return;
 
               if (!isToday) return;

@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, ChangeEvent } from "react";
-import styles from "./SignupForm.module.css";
+import { useState } from "react";
 import { FaUser, FaCalendarAlt, FaEnvelope, FaPhone, FaEye } from 'react-icons/fa';
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/app/store/useUserStore";
@@ -9,6 +8,7 @@ import { mapUserToClient } from "@/utils/mapUser";
 import { signupService, googleSignupService } from "@/services/client/authService";
 import { signInWithGoogle } from "@/services/server/firebaseService";
 import { ROUTES } from "@/config/routes";
+import styles from "./SignupForm.module.css";
 
 export default function SignupForm() {
 

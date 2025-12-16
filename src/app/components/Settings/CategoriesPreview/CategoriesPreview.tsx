@@ -3,8 +3,8 @@
 import { useEffect } from "react";
 import { useCategoriesStore } from "@/app/store/useCategoriesStore";
 import CategoryItem from "../CategoryItem/CategoryItem";
-import styles from "@/app/components/Settings/CategoriesPreview/CategoriesPreview.module.css";
 import Loader from "../../Loader/Loader";
+import styles from "@/app/components/Settings/CategoriesPreview/CategoriesPreview.module.css";
 
 export default function CategoriesPreview() {
     const { categories, fetchCategories, loading } = useCategoriesStore();

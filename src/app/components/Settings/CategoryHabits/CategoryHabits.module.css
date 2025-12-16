@@ -1,5 +1,3 @@
-/* CategoryHabits.module.css - StepUp Brand Design */
-
 .wrapper {
   min-height: 100vh;
   background: linear-gradient(180deg, #deeeef 0%, #ffffff 100%);
@@ -11,7 +9,6 @@
   margin: 0 auto;
 }
 
-/* Error State */
 .errorContainer {
   display: flex;
   flex-direction: column;
@@ -64,7 +61,6 @@
   box-shadow: 0 2px 8px rgba(35, 87, 132, 0.2);
 }
 
-/* Loading State */
 .loadingContainer {
   display: flex;
   flex-direction: column;
@@ -95,7 +91,6 @@
   font-weight: 500;
 }
 
-/* Edit Modal Overlay */
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -171,7 +166,6 @@
   background: rgba(188, 219, 223, 0.5);
 }
 
-/* Action Bar (for future add habit button) */
 .actionBar {
   display: flex;
   align-items: center;
@@ -209,7 +203,6 @@
   box-shadow: 0 2px 8px rgba(35, 87, 132, 0.2);
 }
 
-/* Responsive Design */
 @media (min-width: 768px) {
   .wrapper {
     padding: 24px;
@@ -260,7 +253,6 @@
   }
 }
 
-/* Delete Confirmation Modal */
 .deleteModal {
   position: fixed;
   top: 0;
@@ -362,7 +354,6 @@
   box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
 }
 
-/* Smooth scrolling for modal */
 .modalContent {
   scrollbar-width: thin;
   scrollbar-color: #bcdbdf #deeeef;
@@ -386,7 +377,6 @@
   background: #99c8ce;
 }
 
-/* Responsive for delete modal */
 @media (max-width: 480px) {
   .deleteContent {
     padding: 24px;

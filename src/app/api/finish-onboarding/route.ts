@@ -6,8 +6,7 @@ import { authenticate } from "@/lib/server/authMiddleware";
 export async function POST(request: Request) {
   try {
     await dbConnect();
-
-    // מזהה את המשתמש דרך הטוקן
+    
     const user = await authenticate(request);
 
     if (!user?._id) {
