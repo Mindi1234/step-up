@@ -1,3 +1,5 @@
+import { getBaseUrl } from "@/utils/baseUrl";
+
 export async function getAllPosts() {
   const res = await fetch(`/api/posts`, { credentials: "include" });
   if (!res.ok) throw new Error("Failed to fetch posts");
@@ -92,12 +94,12 @@ export async function translateText(text: string, targetLang: string) {
 }
 
 export const getPostById = async (id: string) => {
-  const res = await fetch(`http://localhost:3000/api/posts/${id}`, {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `${getBaseUrl()}/api/posts/${id}`,
+    { cache: "no-store" }
+  );
 
   if (!res.ok) return null;
   const data = await res.json();
   return data.post;
 };
-
