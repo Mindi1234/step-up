@@ -42,4 +42,5 @@ export default function ReminderTime({ value, onChange, error }: ReminderTimePro
               </div>
               {error && <p className={styles.error}>{error.message}</p>}
             </div>
-          );}
+          );
+}

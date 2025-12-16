@@ -1,23 +1,23 @@
 .selectorContainer {
-  display: inline-flex; /* Changed from flex to inline-flex */
-  gap: 0.25rem; /* Reduced gap for tighter button grouping */
+  display: inline-flex; 
+  gap: 0.25rem; 
   padding: 4px;
   border-radius: 10px;
   background-color: #f3f4f6;
-  width: fit-content; /* Prevents stretching */
+  width: fit-content; 
 }
 
 .buttonDefault,
 .buttonActive { 
-  padding: 8px 20px; /* Slightly more horizontal padding */
+  padding: 8px 20px; 
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  white-space: nowrap; /* Prevents text wrapping */
-  transition: all 0.15s ease; /* Smoother transition */
-  user-select: none; /* Prevents text selection */
+  white-space: nowrap; 
+  transition: all 0.15s ease;
+  user-select: none; 
 }
 
 .buttonDefault {

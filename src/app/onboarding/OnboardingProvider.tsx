@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import Shepherd from "shepherd.js";
 import "shepherd.js/dist/css/shepherd.css";
-
 import { useUserStore } from "@/app/store/useUserStore";
 import { useHabitAppStore } from "@/app/store/habitAppStore/store";
 import { useOnboardingStore } from "../store/useOnboardingStore";

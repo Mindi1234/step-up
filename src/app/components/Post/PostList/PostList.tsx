@@ -7,8 +7,8 @@ import { getPostsPaginated } from "@/services/client/postService";
 import { getPusherClient } from "@/lib/pusher-frontend";
 import { IPost } from "@/interfaces/IPost";
 import PostItem from "../PostItem/PostItem";
-import styles from "./PostList.module.css";
 import PostSkeleton from "../../../components/Skeleton/PostSkeleton";
+import styles from "./PostList.module.css";
 
 interface PostListProps {
   refreshTrigger?: number;

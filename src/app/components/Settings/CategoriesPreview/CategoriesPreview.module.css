@@ -43,7 +43,6 @@
   font-weight: 500;
 }
 
-/* Empty State */
 .emptyContainer {
   display: flex;
   flex-direction: column;
@@ -96,7 +95,6 @@
   box-shadow: 0 2px 8px rgba(35, 87, 132, 0.2);
 }
 
-/* Animation for grid items */
 .grid > * {
   animation: fadeInScale 0.4s ease forwards;
   opacity: 0;
@@ -124,7 +122,6 @@
   }
 }
 
-/* Responsive Design */
 @media (min-width: 768px) {
   .container {
     padding: 24px;

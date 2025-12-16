@@ -1,5 +1,4 @@
 import { IHabit } from "@/interfaces/IHabit";
-import { ITodayHabit } from "@/interfaces/ITodayHabit";
 
 export async function getUserHabits(): Promise<IHabit[]> {
   const res = await fetch(`/api/user-habits`, {

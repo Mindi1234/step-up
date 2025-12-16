@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
 import ProfileSidebar from "../Sidebar/Sidebar";
-import styles from "./ProfileSidebarWrapper.module.css";
 import { logout } from "@/services/client/authService";
 import { useUserStore } from "@/app/store/useUserStore";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/config/routes";
 import { getPusherClient } from "@/lib/pusher-frontend";
 import { usePostStore } from "@/app/store/usePostStore";
+import styles from "./ProfileSidebarWrapper.module.css";
 
 export default function ProfileSidebarWrapper() {
   const [isOpen, setIsOpen] = useState(false);

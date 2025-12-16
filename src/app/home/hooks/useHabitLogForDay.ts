@@ -1,5 +1,4 @@
 import { useHabitAppStore } from "@/app/store/habitAppStore/store";
-import { IHabitLog } from "@/interfaces/IHabitLog";
 import { useEffect, useMemo } from "react";
 
 export default function useHabitLogForDay(userId: string, date: Date) {

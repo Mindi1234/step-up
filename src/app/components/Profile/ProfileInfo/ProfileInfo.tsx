@@ -1,6 +1,5 @@
 "use client";
 import { useState, ChangeEvent } from "react";
-import styles from "./ProfileInfo.module.css";
 import { isValidPhone, isValidBirthDate } from "@/services/server/validationService";
 import { FaCamera } from "react-icons/fa";
 import { uploadImageToCloudinary } from "@/services/server/cloudinaryService";
@@ -10,6 +9,7 @@ import { useUserStore } from "@/app/store/useUserStore";
 import ConfirmModal from "@/app/components/Profile/ConfirmModel/ConfirmModal";
 import toast from "react-hot-toast";
 import { ROUTES } from "@/config/routes";
+import styles from "./ProfileInfo.module.css";
 
 interface FormErrors {
   phone?: string;

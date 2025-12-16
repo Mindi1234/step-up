@@ -29,7 +29,6 @@ export default function AddPost({ onClose }: AddPostProps) {
   const [generatedPost, setGeneratedPost] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
-  // ⭐ האם הפוסט כבר אושר בסינון AI?
   const [wasApprovedByAI, setWasApprovedByAI] = useState(false);
 
   const [show, setShow] = useState(false);
@@ -96,7 +95,6 @@ export default function AddPost({ onClose }: AddPostProps) {
     }
   };
 
-  // ⭐ MAIN SUBMIT HANDLER
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user?.id) return;
@@ -105,14 +103,12 @@ export default function AddPost({ onClose }: AddPostProps) {
     setIsLoading(true);
 
     try {
-      // ❌ מניעת פוסט ריק
       if (!content.trim() && files.length === 0) {
         setError("Please add text or upload media.");
         setIsLoading(false);
         return;
       }
 
-      // ⭐ CASE 1 — כבר עבר סינון AI → מעלים מיד
       if (wasApprovedByAI) {
         const mediaUrls = await uploadMedia();
         await addPost({ userId: user.id, content, media: mediaUrls });
@@ -120,7 +116,6 @@ export default function AddPost({ onClose }: AddPostProps) {
         return;
       }
 
-      // ⭐ CASE 2 — סינון AI ראשון
       const aiData = await filterPostAI(content, files.length > 0);
 
       if (!aiData.allowed) {
@@ -129,14 +124,12 @@ export default function AddPost({ onClose }: AddPostProps) {
         return;
       }
 
-      // ⭐ הצעת שכתוב
       if (aiData.rewrite) {
         setAiSuggestion(aiData.rewrite);
         setIsLoading(false);
         return;
       }
 
-      // ⭐ הפוסט מאושר → מעלים
       const mediaUrls = await uploadMedia();
       await addPost({ userId: user.id, content, media: mediaUrls });
 
@@ -154,7 +147,6 @@ export default function AddPost({ onClose }: AddPostProps) {
     <div className={`${styles.addPostModal} ${isPostModalOpen ? styles.show : styles.hide}`}>
       <div className={`${styles.modal} ${isPostModalOpen ? styles.slideIn : styles.slideOut}`}>
 
-        {/* ⭐ GENERATED POST */}
         {generatedPost && (
           <div className={styles.aiSuggestionBox}>
             <h4>✨ Suggested post:</h4>
@@ -177,7 +169,6 @@ export default function AddPost({ onClose }: AddPostProps) {
           </div>
         )}
 
-        {/* ⭐ FILTER REWRITE */}
         {aiSuggestion && (
           <div className={styles.aiSuggestionBox}>
             <h4>✨ Improved wording:</h4>
@@ -212,7 +203,7 @@ export default function AddPost({ onClose }: AddPostProps) {
             value={content}
             onChange={(e) => {
               setContent(e.target.value);
-              setWasApprovedByAI(false); // אם המשתמש שינה — חייב סינון מחדש
+              setWasApprovedByAI(false); 
             }}
             className={styles.contentTextArea}
             disabled={isLoading}

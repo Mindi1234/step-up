@@ -8,10 +8,10 @@ import CompletedCard from "../components/Insight/Blokes/Completed/Completed";
 import TipCard from "../components/Insight/TipCard/TipCard";
 import { IQuote } from "@/interfaces/IQuote";
 import { fetchRandomQuote } from "@/services/client/quoteServise";
-import styles from "./page.module.css";
 import InsightMessage from "../components/Insight/InsightCard/InsightMessage";
 import Ticker from "../components/Insight/Ticker/Ticker";
 import Loader from "../components/Loader/Loader";
+import styles from "./page.module.css";
 
 export default function InsightsPage() {
   const { completed, completedThisWeek, fetchInsights } = useInsightStore();

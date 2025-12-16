@@ -1,7 +1,6 @@
 "use client";
 import { useState, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
-import styles from "./LoginForm.module.css";
 import { FaEnvelope, FaEye } from 'react-icons/fa';
 import { signInWithGoogle } from "@/services/server/firebaseService";
 import { useUserStore } from "@/app/store/useUserStore";
@@ -9,6 +8,7 @@ import { mapUserToClient } from "@/utils/mapUser";
 import { loginService, googleLoginService } from "@/services/client/authService";
 import { ROUTES } from "@/config/routes";
 import toast from "react-hot-toast";
+import styles from "./LoginForm.module.css";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");

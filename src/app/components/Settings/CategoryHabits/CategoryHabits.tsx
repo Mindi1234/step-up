@@ -8,9 +8,9 @@ import Loader from "@/app/components/Loader/Loader";
 import { IHabit } from "@/interfaces/IHabit";
 import HabitForm from "@/app/components/Habit/AddHabit/HabitForm/HabitForm";
 import HabitsListDisplay from "../HabitsListDisplay/HabitsListDisplay";
-import styles from "./CategoryHabits.module.css";
 import { X, AlertTriangle } from "lucide-react";
 import { useHabitAppStore } from "@/app/store/habitAppStore/store";
+import styles from "./CategoryHabits.module.css";
 
 interface CategoryHabitsProps {
     routeName: string;

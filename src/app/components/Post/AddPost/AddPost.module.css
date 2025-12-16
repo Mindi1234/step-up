@@ -1,6 +1,3 @@
-/* AddPost.module.css - StepUp Brand Design */
-
-/* Modal Overlay */
 .addPostModal {
   position: fixed;
   top: 0;
@@ -26,7 +23,6 @@
   pointer-events: none;
 }
 
-/* Modal Container */
 .modal {
   background: #ffffff;
   border-radius: 20px;
@@ -47,7 +43,6 @@
   transform: translateY(20px) scale(0.95);
 }
 
-/* Close Button */
 .closeButton {
   position: absolute;
   top: 16px;
@@ -72,7 +67,6 @@
   transform: rotate(90deg);
 }
 
-/* AI Suggestion Box */
 .aiSuggestionBox {
   position: fixed;
   top: 50%;
@@ -156,12 +150,10 @@
   border-color: #235784;
 }
 
-/* Form */
 .addPostForm {
   padding: 24px;
 }
 
-/* Error Message */
 .errorMessage {
   background: linear-gradient(135deg, #ff6b6b, #ff8787);
   color: white;
@@ -178,7 +170,6 @@
   75% { transform: translateX(5px); }
 }
 
-/* Textarea */
 .contentTextArea {
   width: 100%;
   min-height: 140px;
@@ -210,7 +201,6 @@
   cursor: not-allowed;
 }
 
-/* Generate Button */
 .generateButton {
   width: 100%;
   background: linear-gradient(135deg, #bcdbdf, #99c8ce);
@@ -240,12 +230,10 @@
   transform: none;
 }
 
-/* Actions Container */
 .actionsContainer {
   margin-bottom: 16px;
 }
 
-/* File Input */
 .fileInput {
   display: none;
 }
@@ -276,7 +264,6 @@
   font-size: 18px;
 }
 
-/* Submit Button */
 .submitButton {
   width: 100%;
   background: linear-gradient(135deg, #235784, #2e72ac);
@@ -304,7 +291,6 @@
   opacity: 0.7;
 }
 
-/* Disabled Message */
 .disabledMessage {
   margin-top: 16px;
   padding: 16px;
@@ -316,7 +302,6 @@
   line-height: 1.6;
 }
 
-/* Responsive Design - Mobile First */
 @media (max-width: 480px) {
   .modal {
     border-radius: 20px 20px 0 0;
@@ -345,7 +330,6 @@
   }
 }
 
-/* Tablet and up */
 @media (min-width: 768px) {
   .modal {
     max-height: 85vh;
@@ -356,7 +340,6 @@
   }
 }
 
-/* Smooth scrollbar for modal */
 .modal::-webkit-scrollbar {
   width: 8px;
 }

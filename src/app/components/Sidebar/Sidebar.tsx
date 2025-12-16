@@ -1,5 +1,5 @@
 "use client";
-import { img } from "framer-motion/m";
+
 import styles from "./Sidebar.module.css";
 
 interface IUserFront {
@@ -22,7 +22,6 @@ export default function ProfileSidebar({ user, isOpen, onClose, onLogout }: Prof
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.sidebar} onClick={(e) => e.stopPropagation()}>
         <button className={styles.closeBtn} onClick={onClose}>×</button>
-        {/* {user.profileImg && <img src={user.profileImg} alt={user.name} className={styles.profileImg} />} */}
         <div className={styles.profileImgWrapper}>
         {user.profileImg ? (
           <img
