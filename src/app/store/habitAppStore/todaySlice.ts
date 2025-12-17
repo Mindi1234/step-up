@@ -11,6 +11,7 @@ export const createTodaySlice: StateCreator<
   TodaySlice
 > = (set, get) => ({
   todayHabits: [],
+  realTodayHabits: [],
   loadingToday: false,
 
   fetchTodayHabits: async (date) => {
@@ -22,14 +23,36 @@ export const createTodaySlice: StateCreator<
       loadingToday: false,
     });
   },
+  fetchRealTodayHabits: async () => {
+    const today = new Date().toISOString().split("T")[0];
+    const data = await getHabitsByDate(today);
 
+    set({ realTodayHabits: data || [] })
+  },
   toggleTodayStatus: async (logId) => {
-    const updated = await updateHabitStatus(logId);
+    const prevHabitsBeforeUpdate = get().todayHabits;
+    const prevRealTodayHabits = get().realTodayHabits;
+
+    const updatedTodayHabits = prevHabitsBeforeUpdate.map(h =>
+      h.logId === logId ? { ...h, isDone: !h.isDone } : h
+    );
+
+    const updatedRealTodayHabits = prevRealTodayHabits.map(h =>
+      h.logId === logId ? { ...h, isDone: !h.isDone } : h
+    );
 
     set({
-      todayHabits: get().todayHabits.map((h) =>
-        h.logId === logId ? { ...h, isDone: updated.isDone } : h
-      ),
+      todayHabits: updatedTodayHabits,
+      realTodayHabits: updatedRealTodayHabits,
     });
+
+    try {
+      await updateHabitStatus(logId);
+    } catch (error) {
+      set({
+        todayHabits: prevHabitsBeforeUpdate,
+        realTodayHabits: prevRealTodayHabits,
+      }); console.error("Failed to update habit status", error);
+    }
   },
 });

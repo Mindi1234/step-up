@@ -122,15 +122,13 @@ export default function TodayHabits({ selectedDate }: { selectedDate: Date }) {
             style={getCategoryStyle(habit)}
             onClick={async () => {
               if (isOnboardingActive) return;
-
               if (!isToday) return;
+              toggleTodayStatus(habit.logId);
 
-              await toggleTodayStatus(habit.logId);
-
-              if (user?.id) {
-                const iso = selectedDate.toISOString();
-                await fetchLogs(user.id, iso);
-              }
+              // if (user?.id) {
+              //   const iso = selectedDate.toISOString();
+              //   await fetchLogs(user.id, iso);
+              // }
             }}
           >
             <div className={styles.statusCircle}>
