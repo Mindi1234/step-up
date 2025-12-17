@@ -13,8 +13,10 @@ export interface HabitsSlice {
 
 export interface TodaySlice {
   todayHabits: ITodayHabit[];
+  realTodayHabits:ITodayHabit [];
   loadingToday: boolean;
   fetchTodayHabits: (date: string) => Promise<void>;
+  fetchRealTodayHabits: () => Promise<void>;
   toggleTodayStatus: (logId: string) => Promise<void>;
 }
 
