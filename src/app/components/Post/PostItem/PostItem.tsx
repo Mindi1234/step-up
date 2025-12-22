@@ -59,10 +59,6 @@ export default function PostItem({ post }: { post: IPost }) {
 
   const BASE_URL = globalThis?.location?.origin ?? "";
   const postUrl = `${BASE_URL}/posts/${post._id}`;
-  // const postUrl =
-  //   typeof window !== "undefined"
-  //     ? `${window.location.origin}/posts/${post._id}`
-  //     : "";
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
