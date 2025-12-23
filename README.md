@@ -58,7 +58,7 @@ Linkedin: https://www.linkedin.com/in/efrat-friedman-746534348
 👩‍💻 **Mimi kenig**    
 Software Engineer   
 GitHub:  https://github.com/Mindi1234   
-Linkedin:   
+Linkedin:   www.linkedin.com/in/mimi-kenig-304583357
 👩‍💻 **Shira Levi**    
 Software Engineer    
 GitHub:   
